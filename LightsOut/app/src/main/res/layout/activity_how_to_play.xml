@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/gradient_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scrollViewHowToPlay"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:background="@drawable/gradient_background"
+        android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/textViewHowToPlayIntro"
+            style="@style/CategoryStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imageViewLightsOutExampleBoard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:srcCompat="@drawable/lights_out_example_board" />
+
+        <TextView
+            android:id="@+id/textViewHowToPlayParagraph"
+            style="@style/CategoryStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="30dp"/>
+
+        <ImageView
+            android:id="@+id/imageViewLightsOutEmptyBoard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:srcCompat="@drawable/lights_out_empty_board" />
+
+        <TextView
+            android:id="@+id/textViewHowToPlayEnding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

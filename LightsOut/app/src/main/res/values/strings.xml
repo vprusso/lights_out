@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">LightsOut</string>
+
+    <string name="lights_out_title">Lights Out!</string>
+    <string name="play">Play</string>
+    <string name="how_to_play">How to Play</string>
+    <string name="about">About</string>
+
+    <string name="moves">Moves:</string>
+
+
+
+</resources>
