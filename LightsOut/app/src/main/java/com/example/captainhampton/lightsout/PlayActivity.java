@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
-    int NUM_ROWS = 4;
-    int NUM_COLS = 4;
+    int NUM_ROWS = 3;
+    int NUM_COLS = 3;
 
     Button buttonHome, buttonHint, buttonReset;
     Button[][] lights = new Button[NUM_ROWS][NUM_COLS];

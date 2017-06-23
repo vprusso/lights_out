@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     Button buttonPlay, buttonHowToPlay, buttonAbout;
@@ -15,6 +18,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        displayBannerAd();
 
         setupVariables();
     }
@@ -46,6 +51,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(aboutIntent);
         }
+    }
 
+    public void displayBannerAd() {
+        AdView adView = (AdView)findViewById(R.id.mainAdView);
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        //AdRequest adRequest = new AdRequest.Builder().build();
+
+        adView.loadAd(adRequest);
     }
 }

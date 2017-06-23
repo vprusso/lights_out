@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">LightsOut</string>
 
+    <string name="banner_ad">Banner Ad</string>
+    <string name="interstitial_ad">Interstitial Ad</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="interstitial_load">Load Interstitial</string>
+    <string name="interstitial_not_ready">Interstitial Not Ready</string>
+    <string name="interstitial_loading">Loading Interstitial</string>
+    <string name="interstitial_show">Show Interstitial</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="ad_test_device">Not Defined</string>
+
     <string name="lights_out_title">Lights Out!</string>
     <string name="play">Play</string>
     <string name="how_to_play">How to Play</string>
