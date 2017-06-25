@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     public void onClick(View v) {
 
         if (buttonPlay.isPressed()) {
-            Intent playIntent = new Intent(MainActivity.this, PlayActivity.class);
-            startActivity(playIntent);
+            Intent levelDimSelectIntent = new Intent(MainActivity.this, LevelDimSelect.class);
+            startActivity(levelDimSelectIntent);
         }
 
         if (buttonHowToPlay.isPressed()) {

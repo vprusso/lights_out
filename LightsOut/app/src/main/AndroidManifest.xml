@@ -32,6 +32,12 @@
         <activity
             android:name=".AboutActivity"
             android:label="@string/about" />
+        <activity
+            android:name=".LevelDimSelect"
+            android:label="@string/level_dim_select" />
+        <activity
+            android:name=".LevelSelect"
+            android:label="@string/level_select" />
 
         <activity
             android:name="com.google.android.gms.ads.AdActivity"

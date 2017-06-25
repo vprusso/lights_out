@@ -4,10 +4,11 @@ import org.ejml.simple.SimpleMatrix;
 
 public class Solver {
 
-    int NUM_ROWS, NUM_COLS;
-    public Solver(int numRows, int numCols){
-        NUM_COLS = numCols;
-        NUM_ROWS = numRows;
+    int NUM_ROWS, NUM_COLS, NUM_LEVEL;
+    public Solver(int num_rows, int num_cols, int num_level){
+        NUM_COLS = num_cols;
+        NUM_ROWS = num_rows;
+        NUM_LEVEL = num_level;
     }
     PlayActivity playActivity = new PlayActivity();
 
@@ -144,7 +145,7 @@ public class Solver {
         boolean[][] solution = new boolean[NUM_ROWS][NUM_COLS];
 
 
-        SimpleMatrix A = SolverUtils.getAdjacencyMatrix(NUM_ROWS, NUM_COLS);
+        SimpleMatrix A = SolverUtils.getAdjacencyMatrix(NUM_ROWS, NUM_COLS, NUM_LEVEL);
         SimpleMatrix b;
         b = calculateLightVector(light_states);
         A = A.combine(0, A.numCols(), b.transpose());

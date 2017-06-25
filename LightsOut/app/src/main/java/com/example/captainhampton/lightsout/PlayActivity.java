@@ -16,6 +16,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     int NUM_ROWS = 3;
     int NUM_COLS = 3;
+    int NUM_LEVEL = 0;
 
     Button buttonHome, buttonHint, buttonReset;
     Button[][] lights = new Button[NUM_ROWS][NUM_COLS];
@@ -33,7 +34,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level);
 
-        solver = new Solver(NUM_ROWS, NUM_COLS);
+        solver = new Solver(NUM_ROWS, NUM_COLS, NUM_LEVEL);
         setupVariables();
         initBoard();
         setupBoard();

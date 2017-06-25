@@ -9,9 +9,18 @@
     android:layout_height="match_parent"
     tools:context="com.example.captainhampton.lightsout.MainActivity">
 
+    <ScrollView
+        android:id="@+id/scrollViewMainMenu"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:background="@drawable/gradient_background"
+        android:fillViewport="true">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_background">
 
 
         <TextView
@@ -80,6 +89,6 @@
         </com.google.android.gms.ads.AdView>
 
     </RelativeLayout>
-
+</ScrollView>
 
 </LinearLayout>
