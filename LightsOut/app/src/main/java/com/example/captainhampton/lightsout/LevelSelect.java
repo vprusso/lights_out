@@ -21,6 +21,7 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
 
     TableLayout tableLayoutLevelSelect;
 
+    Button levelButton;
 
 
     @Override
@@ -30,9 +31,6 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
 
         setupVariables();
         initLevelSelect();
-
-//        Log.d("TAG", "outcome = " + Levels.getLevels(NUM_ROWS, NUM_COLS).length);
-
     }
 
     private void setupVariables() {
@@ -44,11 +42,12 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
         String[] level_dim_split = level_dim_selected.split("x");
         NUM_ROWS = Integer.parseInt(level_dim_split[0]);
         NUM_COLS = Integer.parseInt(level_dim_split[1]);
-        NUM_LEVEL = 0;
 
     }
 
     private void initLevelSelect() {
+        int level_count = 0;
+
         for (int i = 0; i < numLevelSelectRows; i++) {
             TableRow tableRowBoard = new TableRow(this);
             tableRowBoard.setLayoutParams(new TableLayout.LayoutParams(
@@ -56,34 +55,41 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
                     TableLayout.LayoutParams.MATCH_PARENT,
                     1.0f
             ));
+
             tableLayoutLevelSelect.addView(tableRowBoard);
             for (int j = 0; j < numLevelSelectCols; j++) {
 
                 final int x = i;
                 final int y = j;
-                Button button = new Button(this);
-                button.setLayoutParams(new TableRow.LayoutParams(
+                levelButton = new Button(this);
+                levelButton.setLayoutParams(new TableRow.LayoutParams(
                         TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT,
                         1.0f
                 ));
 
-                button.setText("" + x + "," + y);
+                levelButton.setText(Integer.toString(level_count));
+                levelButton.setTag(Integer.toString(level_count));
+                level_count += 1;
+
                 // make text not clip on small buttons
-                button.setPadding(0, 0, 0, 0);
-                button.setOnClickListener(new View.OnClickListener() {
+                levelButton.setPadding(0, 0, 0, 0);
+                levelButton.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
-                        Intent levelDimSelectIntent = new Intent(LevelSelect.this, PlayActivity.class);
-                        //levelDimSelectIntent.putExtra("NUM_ROWS", NUM_ROWS);
-                        //levelDimSelectIntent.putExtra("NUM_COLS", NUM_COLS);
-                        //levelDimSelectIntent.putExtra("NUM_LEVEL", NUM_LEVEL);
-                        startActivity(levelDimSelectIntent);
+
+                        //Log.d("TAG", "outcome = " + v.getTag().toString());
+                        NUM_LEVEL = Integer.parseInt(v.getTag().toString());
+                        Intent playLevelIntent = new Intent(LevelSelect.this, PlayActivity.class);
+                        playLevelIntent.putExtra("NUM_ROWS", NUM_ROWS);
+                        playLevelIntent.putExtra("NUM_COLS", NUM_COLS);
+                        playLevelIntent.putExtra("NUM_LEVEL", NUM_LEVEL);
+                        startActivity(playLevelIntent);
                     }
                 });
 
-                tableRowBoard.addView(button);
+                tableRowBoard.addView(levelButton);
             }
         }
 

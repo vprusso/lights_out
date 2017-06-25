@@ -3,6 +3,7 @@ package com.example.captainhampton.lightsout;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,17 +15,15 @@ import java.util.Locale;
 
 public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
-    int NUM_ROWS = 3;
-    int NUM_COLS = 3;
-    int NUM_LEVEL = 0;
+    static int NUM_ROWS, NUM_COLS, NUM_LEVEL;
 
     Button buttonHome, buttonHint, buttonReset;
-    Button[][] lights = new Button[NUM_ROWS][NUM_COLS];
+    Button[][] lights;
     TextView textViewNumMoves, textViewLevelTime;
     TableLayout tableLayoutBoard;
 
-    boolean[][] light_states = new boolean[NUM_ROWS][NUM_COLS];
-    int level_num = 0;
+    boolean[][] light_states;
+    int level_num;
     int num_moves;
     long level_time; // System.nanoTime()
     private Solver solver;
@@ -34,6 +33,13 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level);
 
+        NUM_ROWS = getIntent().getIntExtra("NUM_ROWS",0);
+        NUM_COLS = getIntent().getIntExtra("NUM_COLS",0);
+        NUM_LEVEL = getIntent().getIntExtra("NUM_LEVEL",0);
+
+        lights = new Button[NUM_ROWS][NUM_COLS];
+        light_states = new boolean[NUM_ROWS][NUM_COLS];
+
         solver = new Solver(NUM_ROWS, NUM_COLS, NUM_LEVEL);
         setupVariables();
         initBoard();
@@ -41,7 +47,27 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     }
 
+    private void setupVariables() {
+
+        tableLayoutBoard = (TableLayout)findViewById(R.id.tableLayoutBoard);
+
+        buttonHome = (Button)findViewById(R.id.buttonHome);
+        buttonHome.setOnClickListener(this);
+
+        buttonReset = (Button)findViewById(R.id.buttonReset);
+        buttonReset.setOnClickListener(this);
+
+        buttonHint = (Button)findViewById(R.id.buttonHint);
+        buttonHint.setOnClickListener(this);
+
+        textViewNumMoves = (TextView)findViewById(R.id.textViewNumMoves);
+        textViewLevelTime = (TextView)findViewById(R.id.textViewLevelTime);
+
+    }
+
     private void initBoard() {
+
+
         for (int i = 0; i < NUM_ROWS; i++) {
             TableRow tableRowBoard = new TableRow(this);
             tableRowBoard.setLayoutParams(new TableLayout.LayoutParams(
@@ -80,9 +106,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
                         if (checkVictory()) {
                             // TODO : victory dance
-                            level_num++;
-                            if (level_num <= Levels.getLevels(NUM_ROWS, NUM_COLS).length) {
-                                setLevel(level_num);
+                            NUM_LEVEL++;
+                            if (NUM_LEVEL <= Levels.getLevels(NUM_ROWS, NUM_COLS).length) {
+                                setLevel(NUM_LEVEL);
                                 setupBoard();
                             } else {
                                 // TODO
@@ -100,26 +126,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     }
 
-    private void setupVariables() {
-
-        tableLayoutBoard = (TableLayout)findViewById(R.id.tableLayoutBoard);
-
-        buttonHome = (Button)findViewById(R.id.buttonHome);
-        buttonHome.setOnClickListener(this);
-
-        buttonReset = (Button)findViewById(R.id.buttonReset);
-        buttonReset.setOnClickListener(this);
-
-        buttonHint = (Button)findViewById(R.id.buttonHint);
-        buttonHint.setOnClickListener(this);
-
-        textViewNumMoves = (TextView)findViewById(R.id.textViewNumMoves);
-        textViewLevelTime = (TextView)findViewById(R.id.textViewLevelTime);
-
-    }
-
     private void setLevel(int lvl) {
-        level_num = lvl;
+        NUM_LEVEL = lvl;
     }
 
     private void resetTimer() {
@@ -198,9 +206,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         clearSolution();
 
 
-        for (int i = 0; i < Levels.getLevels(NUM_ROWS,NUM_COLS)[level_num].length; i++) {
-            int x = Levels.getLevels(NUM_ROWS,NUM_COLS)[level_num][i][0];
-            int y = Levels.getLevels(NUM_ROWS,NUM_COLS)[level_num][i][1];
+        for (int i = 0; i < Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL].length; i++) {
+            int x = Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL][i][0];
+            int y = Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL][i][1];
 
             activateButton(x, y);
         }

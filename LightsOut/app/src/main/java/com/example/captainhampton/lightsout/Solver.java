@@ -5,12 +5,13 @@ import org.ejml.simple.SimpleMatrix;
 public class Solver {
 
     int NUM_ROWS, NUM_COLS, NUM_LEVEL;
+    PlayActivity playActivity = new PlayActivity();
+
     public Solver(int num_rows, int num_cols, int num_level){
         NUM_COLS = num_cols;
         NUM_ROWS = num_rows;
         NUM_LEVEL = num_level;
     }
-    PlayActivity playActivity = new PlayActivity();
 
     public static int findFirstIdx(SimpleMatrix C) {
         int idx = -1;
