@@ -10,6 +10,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     int NUM_ROWS = 3;
@@ -18,6 +20,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     Button buttonHome, buttonHint, buttonReset;
     Button[][] lights = new Button[NUM_ROWS][NUM_COLS];
     TextView textViewNumMoves, textViewLevelTime;
+    TableLayout tableLayoutBoard;
 
     boolean[][] light_states = new boolean[NUM_ROWS][NUM_COLS];
     int level_num = 0;
@@ -32,25 +35,12 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         solver = new Solver(NUM_ROWS, NUM_COLS);
         setupVariables();
+        initBoard();
+        setupBoard();
 
     }
 
-    private void setupVariables() {
-
-        TableLayout tableLayoutBoard = (TableLayout)findViewById(R.id.tableLayoutBoard);
-
-        buttonHome = (Button)findViewById(R.id.buttonHome);
-        buttonHome.setOnClickListener(this);
-
-        buttonReset = (Button)findViewById(R.id.buttonReset);
-        buttonReset.setOnClickListener(this);
-
-        buttonHint = (Button)findViewById(R.id.buttonHint);
-        buttonHint.setOnClickListener(this);
-
-        textViewNumMoves = (TextView)findViewById(R.id.textViewNumMoves);
-        textViewLevelTime = (TextView)findViewById(R.id.textViewLevelTime);
-
+    private void initBoard() {
         for (int i = 0; i < NUM_ROWS; i++) {
             TableRow tableRowBoard = new TableRow(this);
             tableRowBoard.setLayoutParams(new TableLayout.LayoutParams(
@@ -83,8 +73,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                             pressedLights(x, y);
                             clearSolution();
                             num_moves++;
-                            textViewNumMoves.setText(String.format("%d", num_moves));
-                            textViewLevelTime.setText(String.format("%d", level_time));
+                            textViewNumMoves.setText(String.format(Locale.US, "%d", num_moves));
+                            textViewLevelTime.setText(String.format(Locale.US, "%d", level_time));
                         }
 
                         if (checkVictory()) {
@@ -107,8 +97,23 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             }
         }
 
-        setupBoard();
+    }
 
+    private void setupVariables() {
+
+        tableLayoutBoard = (TableLayout)findViewById(R.id.tableLayoutBoard);
+
+        buttonHome = (Button)findViewById(R.id.buttonHome);
+        buttonHome.setOnClickListener(this);
+
+        buttonReset = (Button)findViewById(R.id.buttonReset);
+        buttonReset.setOnClickListener(this);
+
+        buttonHint = (Button)findViewById(R.id.buttonHint);
+        buttonHint.setOnClickListener(this);
+
+        textViewNumMoves = (TextView)findViewById(R.id.textViewNumMoves);
+        textViewLevelTime = (TextView)findViewById(R.id.textViewLevelTime);
 
     }
 
@@ -118,12 +123,12 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     private void resetTimer() {
         level_time = 0;
-        textViewLevelTime.setText(String.format("%d", level_time));
+        textViewLevelTime.setText(String.format(Locale.US, "%d", level_time));
     }
 
     private void resetNumMoves() {
         num_moves = 0;
-        textViewNumMoves.setText(String.format("%d", num_moves));
+        textViewNumMoves.setText(String.format(Locale.US, "%d", num_moves));
     }
 
     private void activateButton(int x, int y) {
