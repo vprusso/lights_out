@@ -1,5 +1,7 @@
 package com.example.captainhampton.lightsout;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -23,10 +26,11 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     TableLayout tableLayoutBoard;
 
     boolean[][] light_states;
-    int level_num;
     int num_moves;
     long level_time; // System.nanoTime()
     private Solver solver;
+
+    String sharedLevelPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         lights = new Button[NUM_ROWS][NUM_COLS];
         light_states = new boolean[NUM_ROWS][NUM_COLS];
+        sharedLevelPrefs = String.valueOf(NUM_ROWS) + "-" + String.valueOf(NUM_COLS) + "-" + String.valueOf(NUM_LEVEL);
 
         solver = new Solver(NUM_ROWS, NUM_COLS, NUM_LEVEL);
         setupVariables();
@@ -106,6 +111,13 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
                         if (checkVictory()) {
                             // TODO : victory dance
+                            SharedPreferences sharedPreferences = getSharedPreferences("levelInfo", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(sharedLevelPrefs, "WIN");
+                            editor.apply();
+
+
+
                             NUM_LEVEL++;
                             if (NUM_LEVEL <= Levels.getLevels(NUM_ROWS, NUM_COLS).length) {
                                 setLevel(NUM_LEVEL);

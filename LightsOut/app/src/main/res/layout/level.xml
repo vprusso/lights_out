@@ -123,12 +123,6 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_column="2"/>
 
-            <Button
-                android:id="@+id/buttonHint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/hint"
-                android:layout_column="9"/>
         </TableRow>
 
         <TableRow
@@ -140,7 +134,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/reset"
-                android:layout_column="9"/>
+                android:layout_column="1"/>
+
+            <Button
+                android:id="@+id/buttonHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hint"
+                android:layout_column="1"/>
+
         </TableRow>
 
         <TableRow

@@ -15,14 +15,9 @@ import java.util.Locale;
 public class LevelSelect extends AppCompatActivity implements View.OnClickListener {
 
     int NUM_ROWS, NUM_COLS, NUM_LEVEL;
-
-    int numLevelSelectRows = 3;
-    int numLevelSelectCols = 3;
-
     TableLayout tableLayoutLevelSelect;
-
     Button levelButton;
-
+    TextView textViewLevelSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +25,7 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_level_select);
 
         setupVariables();
+        initLevelSelectScreen();
         initLevelSelect();
     }
 
@@ -43,55 +39,103 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
         NUM_ROWS = Integer.parseInt(level_dim_split[0]);
         NUM_COLS = Integer.parseInt(level_dim_split[1]);
 
+        textViewLevelSelect = (TextView)findViewById(R.id.textViewLevelSelect);
+
+    }
+
+    private void initLevelSelectScreen() {
+        textViewLevelSelect.setText("Level " + NUM_ROWS + "x" + NUM_COLS);
     }
 
     private void initLevelSelect() {
         int level_count = 0;
+        int total_levels = Levels.getLevels(NUM_ROWS,NUM_COLS).length;
 
-        for (int i = 0; i < numLevelSelectRows; i++) {
+        for (int i = 0; i < total_levels; i++) {
             TableRow tableRowBoard = new TableRow(this);
             tableRowBoard.setLayoutParams(new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
                     TableLayout.LayoutParams.MATCH_PARENT,
                     1.0f
             ));
-
             tableLayoutLevelSelect.addView(tableRowBoard);
-            for (int j = 0; j < numLevelSelectCols; j++) {
 
-                final int x = i;
-                final int y = j;
-                levelButton = new Button(this);
-                levelButton.setLayoutParams(new TableRow.LayoutParams(
-                        TableRow.LayoutParams.MATCH_PARENT,
-                        TableRow.LayoutParams.MATCH_PARENT,
-                        1.0f
-                ));
+            levelButton = new Button(this);
+            levelButton.setTextSize(20);
+            levelButton.setLayoutParams(new TableRow.LayoutParams(
+                    250,//TableRow.LayoutParams.MATCH_PARENT,
+                    250,//TableRow.LayoutParams.MATCH_PARENT,
+                    1.0f
+            ));
 
-                levelButton.setText(Integer.toString(level_count));
-                levelButton.setTag(Integer.toString(level_count));
-                level_count += 1;
+            String level_button_text = level_count + " : " + NUM_ROWS + "x" + NUM_COLS;
+            levelButton.setText(level_button_text);
+            levelButton.setTag(Integer.toString(level_count));
+            level_count += 1;
 
-                // make text not clip on small buttons
-                levelButton.setPadding(0, 0, 0, 0);
-                levelButton.setOnClickListener(new View.OnClickListener() {
+            // make text not clip on small buttons
+            levelButton.setPadding(0, 0, 0, 0);
+            levelButton.setOnClickListener(new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
 
-                        //Log.d("TAG", "outcome = " + v.getTag().toString());
-                        NUM_LEVEL = Integer.parseInt(v.getTag().toString());
-                        Intent playLevelIntent = new Intent(LevelSelect.this, PlayActivity.class);
-                        playLevelIntent.putExtra("NUM_ROWS", NUM_ROWS);
-                        playLevelIntent.putExtra("NUM_COLS", NUM_COLS);
-                        playLevelIntent.putExtra("NUM_LEVEL", NUM_LEVEL);
-                        startActivity(playLevelIntent);
-                    }
-                });
+                    //Log.d("TAG", "outcome = " + v.getTag().toString());
+                    NUM_LEVEL = Integer.parseInt(v.getTag().toString());
+                    Intent playLevelIntent = new Intent(LevelSelect.this, PlayActivity.class);
+                    playLevelIntent.putExtra("NUM_ROWS", NUM_ROWS);
+                    playLevelIntent.putExtra("NUM_COLS", NUM_COLS);
+                    playLevelIntent.putExtra("NUM_LEVEL", NUM_LEVEL);
+                    startActivity(playLevelIntent);
+                }
+            });
 
-                tableRowBoard.addView(levelButton);
-            }
+            tableRowBoard.addView(levelButton);
         }
+
+//        for (int i = 0; i < numLevelSelectRows; i++) {
+//            TableRow tableRowBoard = new TableRow(this);
+//            tableRowBoard.setLayoutParams(new TableLayout.LayoutParams(
+//                    TableLayout.LayoutParams.MATCH_PARENT,
+//                    TableLayout.LayoutParams.MATCH_PARENT,
+//                    1.0f
+//            ));
+//
+//            tableLayoutLevelSelect.addView(tableRowBoard);
+//            for (int j = 0; j < numLevelSelectCols; j++) {
+//
+//                levelButton = new Button(this);
+//                levelButton.setLayoutParams(new TableRow.LayoutParams(
+//                        TableRow.LayoutParams.MATCH_PARENT,
+//                        TableRow.LayoutParams.MATCH_PARENT,
+//                        1.0f
+//                ));
+//
+//                levelButton.setText(Integer.toString(level_count));
+//                levelButton.setTag(Integer.toString(level_count));
+//                level_count += 1;
+//
+//                // make text not clip on small buttons
+//                levelButton.setPadding(0, 0, 0, 0);
+//                //levelButton.setBackgroundResource(R.drawable.gradient_background);
+//                levelButton.setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        //Log.d("TAG", "outcome = " + v.getTag().toString());
+//                        NUM_LEVEL = Integer.parseInt(v.getTag().toString());
+//                        Intent playLevelIntent = new Intent(LevelSelect.this, PlayActivity.class);
+//                        playLevelIntent.putExtra("NUM_ROWS", NUM_ROWS);
+//                        playLevelIntent.putExtra("NUM_COLS", NUM_COLS);
+//                        playLevelIntent.putExtra("NUM_LEVEL", NUM_LEVEL);
+//                        startActivity(playLevelIntent);
+//                    }
+//                });
+//
+//                tableRowBoard.addView(levelButton);
+//            }
+//        }
 
     }
 

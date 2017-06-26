@@ -49,38 +49,12 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/buttonSelect3x4"
-                android:background="@drawable/gradient_background"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
-                android:layout_below="@+id/buttonSelect3x3"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="35dp"
-                android:text="@string/select_3x4"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/buttonSelect4x3"
-                android:background="@drawable/gradient_background"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
-                android:layout_below="@+id/buttonSelect3x4"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="35dp"
-                android:text="@string/select_4x3"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
-
-            <Button
                 android:id="@+id/buttonSelect4x4"
                 android:background="@drawable/gradient_background"
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
-                android:layout_below="@+id/buttonSelect4x3"
+                android:layout_below="@+id/buttonSelect3x3"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="35dp"
                 android:text="@string/select_4x4"

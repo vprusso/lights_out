@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         displayBannerAd();
 
         setupVariables();
+
     }
 
     private void setupVariables() {

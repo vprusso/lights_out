@@ -9,8 +9,7 @@ import android.widget.Button;
 
 public class LevelDimSelect extends AppCompatActivity implements View.OnClickListener {
 
-    Button buttonSelect3x3, buttonSelect3x4, buttonSelect4x3,
-           buttonSelect4x4, buttonSelect5x5, buttonSelect6x6;
+    Button buttonSelect3x3, buttonSelect4x4, buttonSelect5x5, buttonSelect6x6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +23,6 @@ public class LevelDimSelect extends AppCompatActivity implements View.OnClickLis
     private void setupVariables() {
         buttonSelect3x3 = (Button)findViewById(R.id.buttonSelect3x3);
         buttonSelect3x3.setOnClickListener(this);
-
-        buttonSelect3x4 = (Button)findViewById(R.id.buttonSelect3x4);
-        buttonSelect3x4.setOnClickListener(this);
-
-        buttonSelect4x3 = (Button)findViewById(R.id.buttonSelect4x3);
-        buttonSelect4x3.setOnClickListener(this);
 
         buttonSelect4x4 = (Button)findViewById(R.id.buttonSelect4x4);
         buttonSelect4x4.setOnClickListener(this);
@@ -49,18 +42,6 @@ public class LevelDimSelect extends AppCompatActivity implements View.OnClickLis
             Intent select3x3Intent = new Intent(LevelDimSelect.this, LevelSelect.class);
             select3x3Intent.putExtra("LEVEL_DIM_ID", "3x3");
             startActivity(select3x3Intent);
-        }
-
-        if (buttonSelect3x4.isPressed()) {
-            Intent select3x4Intent = new Intent(LevelDimSelect.this, LevelSelect.class);
-            select3x4Intent.putExtra("LEVEL_DIM_ID", "3x4");
-            startActivity(select3x4Intent);
-        }
-
-        if (buttonSelect4x3.isPressed()) {
-            Intent select4x3Intent = new Intent(LevelDimSelect.this, LevelSelect.class);
-            select4x3Intent.putExtra("LEVEL_DIM_ID", "4x3");
-            startActivity(select4x3Intent);
         }
 
         if (buttonSelect4x4.isPressed()) {

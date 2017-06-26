@@ -25,7 +25,7 @@
     <string name="hint">Hint</string>
     <string name="reset">Reset</string>
 
-    <string name="level_dim_select">Level Dimension Select</string>
+    <string name="level_dim_select">Level Select</string>
     <string name="level_select">Level Select</string>
     <string name="select_3x3">3x3</string>
     <string name="select_3x4">3x4</string>
