@@ -1,9 +1,12 @@
 package com.example.captainhampton.lightsout;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,15 +18,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Locale;
+import java.util.Random;
 
 public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     static int NUM_ROWS, NUM_COLS, NUM_LEVEL;
 
-    Button buttonHome, buttonHint, buttonReset;
+    Button buttonHint, buttonReset;
     Button[][] lights;
     TextView textViewNumMoves, textViewLevelTime;
     TableLayout tableLayoutBoard;
+    AlertDialog.Builder alertDialogBuilder;
 
     boolean[][] light_states;
     int num_moves;
@@ -56,9 +61,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         tableLayoutBoard = (TableLayout)findViewById(R.id.tableLayoutBoard);
 
-        buttonHome = (Button)findViewById(R.id.buttonHome);
-        buttonHome.setOnClickListener(this);
-
         buttonReset = (Button)findViewById(R.id.buttonReset);
         buttonReset.setOnClickListener(this);
 
@@ -68,6 +70,105 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         textViewNumMoves = (TextView)findViewById(R.id.textViewNumMoves);
         textViewLevelTime = (TextView)findViewById(R.id.textViewLevelTime);
 
+    }
+
+    private int findMinimumNumberOfMoves() {
+        // TODO : Function that uses solver to determine least amount of moves for winning.
+        // If this is satisfied, the color of the level should be different.
+        // TODO fixme
+        boolean[][] solution = solver.calculateWinningConfig(light_states);
+
+        int minimumMoves = 0;
+        for (int i = 0; i < NUM_ROWS; i++) {
+            for (int j = 0; j < NUM_COLS; j++) {
+                if (solution[i][j] == Boolean.TRUE) {
+                    minimumMoves += 1;
+                }
+            }
+        }
+        return minimumMoves;
+    }
+
+    private void displayVictoryDialogBox() {
+        alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+
+        Random rand = new Random();
+        int randomMessageInteger = rand.nextInt(3) + 1;
+        String randomMessage;
+
+        if (randomMessageInteger == 1) {
+            randomMessage = "Onto the next level?";
+        } else if (randomMessageInteger == 2) {
+            randomMessage = "Thirsty for more?";
+        } else if (randomMessageInteger == 3) {
+            randomMessage = "Onward to glory?";
+        } else {
+            randomMessage = "";
+        }
+
+        Log.d("TAG", "outcome = " + findMinimumNumberOfMoves());
+        Log.d("TAG", "outcome = " + num_moves);
+
+
+        if (num_moves == findMinimumNumberOfMoves()) {
+
+            String victoryMessage = "You just beat level " + NUM_LEVEL + " from the " +
+                    NUM_ROWS + "x" + NUM_COLS + " set of levels. \n\n" + randomMessage;
+
+            alertDialogBuilder.setTitle("Perfect!")
+                    .setMessage(victoryMessage)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            NUM_LEVEL++;
+                            if (NUM_LEVEL <= Levels.getLevels(NUM_ROWS, NUM_COLS).length) {
+                                setLevel(NUM_LEVEL);
+                                setupBoard();
+                            } else {
+                                // TODO
+                            }
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.btn_star)
+                    .show();
+
+        } else {
+
+            String victoryMessage = "You just beat level " + NUM_LEVEL + " from the " +
+                    NUM_ROWS + "x" + NUM_COLS + " set of levels. \n\n" + randomMessage;
+
+            alertDialogBuilder.setTitle("Great job!")
+                    .setMessage(victoryMessage)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            NUM_LEVEL++;
+                            if (NUM_LEVEL <= Levels.getLevels(NUM_ROWS, NUM_COLS).length) {
+                                setLevel(NUM_LEVEL);
+                                setupBoard();
+                            } else {
+                                // TODO
+                            }
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.btn_star_big_off)
+                    .show();
+        }
+    }
+
+    private void saveUserLevelPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences("levelInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(sharedLevelPrefs, "WIN");
+        editor.apply();
     }
 
     private void initBoard() {
@@ -111,20 +212,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
                         if (checkVictory()) {
                             // TODO : victory dance
-                            SharedPreferences sharedPreferences = getSharedPreferences("levelInfo", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString(sharedLevelPrefs, "WIN");
-                            editor.apply();
-
-
-
-                            NUM_LEVEL++;
-                            if (NUM_LEVEL <= Levels.getLevels(NUM_ROWS, NUM_COLS).length) {
-                                setLevel(NUM_LEVEL);
-                                setupBoard();
-                            } else {
-                                // TODO
-                            }
+                            displayVictoryDialogBox();
+                            saveUserLevelPreferences();
                         }
 
                     }
@@ -216,7 +305,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         clearBoard();
         clearSolution();
-
 
         for (int i = 0; i < Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL].length; i++) {
             int x = Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL][i][0];
