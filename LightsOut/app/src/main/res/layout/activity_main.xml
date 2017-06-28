@@ -25,6 +25,7 @@
 
         <TextView
             android:id="@+id/textViewLightsOutTitle"
+            style="@style/LightsOutStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -36,8 +37,10 @@
             android:textSize="36sp"
             android:textStyle="bold" />
 
+
         <Button
             android:id="@+id/buttonPlay"
+            android:textColor="@android:color/holo_orange_light"
             android:background="@drawable/gradient_background"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="match_parent"
@@ -52,6 +55,7 @@
         <Button
             android:id="@+id/buttonHowToPlay"
             android:background="@drawable/gradient_background"
+            android:textColor="@android:color/holo_orange_light"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="match_parent"
             android:layout_height="75dp"
@@ -67,6 +71,7 @@
         <Button
             android:id="@+id/buttonAbout"
             android:background="@drawable/gradient_background"
+            android:textColor="@android:color/holo_orange_light"
             style="@style/Widget.AppCompat.Button"
             android:layout_width="match_parent"
             android:layout_height="75dp"

@@ -24,6 +24,7 @@
     <string name="home">Home</string>
     <string name="hint">Hint</string>
     <string name="reset">Reset</string>
+    <string name="solve">Solve</string>
 
     <string name="level_dim_select">Level Select</string>
     <string name="level_select">Level Select</string>

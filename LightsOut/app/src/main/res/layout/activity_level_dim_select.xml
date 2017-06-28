@@ -24,6 +24,7 @@
 
             <TextView
                 android:id="@+id/textViewLevelDimensionSelect"
+                android:textColor="@android:color/holo_orange_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -37,6 +38,7 @@
 
             <Button
                 android:id="@+id/buttonSelect3x3"
+                android:textColor="@android:color/holo_orange_light"
                 android:background="@drawable/gradient_background"
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="match_parent"
@@ -50,6 +52,7 @@
 
             <Button
                 android:id="@+id/buttonSelect4x4"
+                android:textColor="@android:color/holo_orange_light"
                 android:background="@drawable/gradient_background"
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="match_parent"
@@ -63,6 +66,7 @@
 
             <Button
                 android:id="@+id/buttonSelect5x5"
+                android:textColor="@android:color/holo_orange_light"
                 android:background="@drawable/gradient_background"
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="match_parent"
@@ -76,6 +80,7 @@
 
             <Button
                 android:id="@+id/buttonSelect6x6"
+                android:textColor="@android:color/holo_orange_light"
                 android:background="@drawable/gradient_background"
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="match_parent"

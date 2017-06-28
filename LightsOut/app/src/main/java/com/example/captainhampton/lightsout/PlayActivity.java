@@ -24,7 +24,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     static int NUM_ROWS, NUM_COLS, NUM_LEVEL;
 
-    Button buttonHint, buttonReset;
+    Button buttonHint, buttonReset, buttonSolve;
     Button[][] lights;
     TextView textViewNumMoves, textViewLevelTime;
     TableLayout tableLayoutBoard;
@@ -66,6 +66,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         buttonHint = (Button)findViewById(R.id.buttonHint);
         buttonHint.setOnClickListener(this);
+
+        buttonSolve = (Button)findViewById(R.id.buttonSolve);
+        buttonSolve.setOnClickListener(this);
 
         textViewNumMoves = (TextView)findViewById(R.id.textViewNumMoves);
         textViewLevelTime = (TextView)findViewById(R.id.textViewLevelTime);
@@ -352,7 +355,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             setupBoard();
         }
 
-        if (buttonHint.isPressed()) {
+        if (buttonSolve.isPressed()) {
             showSolution();
         }
 

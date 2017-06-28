@@ -1,13 +1,18 @@
 package com.example.captainhampton.lightsout;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import java.util.logging.Level;
 
 public class LevelSelect extends AppCompatActivity implements View.OnClickListener {
 
@@ -48,26 +53,41 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
         int level_count = 0;
         int total_levels = Levels.getLevels(NUM_ROWS,NUM_COLS).length;
 
+        int leftMargin=10;
+        int topMargin=2;
+        int rightMargin=10;
+        int bottomMargin=100;
+
         for (int i = 0; i < total_levels; i++) {
             TableRow tableRowBoard = new TableRow(this);
-            tableRowBoard.setLayoutParams(new TableLayout.LayoutParams(
+
+            TableLayout.LayoutParams tableRowParams = new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
                     TableLayout.LayoutParams.MATCH_PARENT,
                     1.0f
-            ));
+            );
+            tableRowParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
+            tableRowBoard.setLayoutParams(tableRowParams);
+
             tableLayoutLevelSelect.addView(tableRowBoard);
 
             levelButton = new Button(this);
             levelButton.setTextSize(20);
             levelButton.setLayoutParams(new TableRow.LayoutParams(
-                    250,//TableRow.LayoutParams.MATCH_PARENT,
-                    250,//TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.MATCH_PARENT,
                     1.0f
             ));
 
             String level_button_text = level_count + " : " + NUM_ROWS + "x" + NUM_COLS;
-            levelButton.setText(level_button_text);
             levelButton.setTag(Integer.toString(level_count));
+
+            levelButton.setText(level_button_text);
+            levelButton.setTextColor(ContextCompat.getColor(this, android.R.color.holo_orange_light));
+            levelButton.setTypeface(null, Typeface.BOLD);
+
+            levelButton.setBackgroundResource(R.drawable.gradient_background);
+
             level_count += 1;
 
             // make text not clip on small buttons
