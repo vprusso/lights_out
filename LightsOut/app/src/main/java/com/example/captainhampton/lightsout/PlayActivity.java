@@ -31,7 +31,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     AlertDialog.Builder alertDialogBuilder;
 
     boolean[][] light_states;
-    int num_moves;
+    int num_moves, min_num_moves;
     long level_time; // System.nanoTime()
     private Solver solver;
 
@@ -48,6 +48,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         lights = new Button[NUM_ROWS][NUM_COLS];
         light_states = new boolean[NUM_ROWS][NUM_COLS];
+
         sharedLevelPrefs = String.valueOf(NUM_ROWS) + "-" + String.valueOf(NUM_COLS) + "-" + String.valueOf(NUM_LEVEL);
 
         solver = new Solver(NUM_ROWS, NUM_COLS, NUM_LEVEL);
@@ -75,107 +76,21 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     }
 
-    private int findMinimumNumberOfMoves() {
-        // TODO : Function that uses solver to determine least amount of moves for winning.
-        // If this is satisfied, the color of the level should be different.
-        // TODO fixme
-        boolean[][] solution = solver.calculateWinningConfig(light_states);
+    private void setupBoard() {
 
-        int minimumMoves = 0;
-        for (int i = 0; i < NUM_ROWS; i++) {
-            for (int j = 0; j < NUM_COLS; j++) {
-                if (solution[i][j] == Boolean.TRUE) {
-                    minimumMoves += 1;
-                }
-            }
+        clearBoard();
+        clearSolution();
+
+        for (int i = 0; i < Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL].length; i++) {
+            int x = Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL][i][0];
+            int y = Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL][i][1];
+
+            activateButton(x, y);
         }
-        return minimumMoves;
-    }
-
-    private void displayVictoryDialogBox() {
-        alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-
-        Random rand = new Random();
-        int randomMessageInteger = rand.nextInt(3) + 1;
-        String randomMessage;
-
-        if (randomMessageInteger == 1) {
-            randomMessage = "Onto the next level?";
-        } else if (randomMessageInteger == 2) {
-            randomMessage = "Thirsty for more?";
-        } else if (randomMessageInteger == 3) {
-            randomMessage = "Onward to glory?";
-        } else {
-            randomMessage = "";
-        }
-
-        Log.d("TAG", "outcome = " + findMinimumNumberOfMoves());
-        Log.d("TAG", "outcome = " + num_moves);
-
-
-        if (num_moves == findMinimumNumberOfMoves()) {
-
-            String victoryMessage = "You just beat level " + NUM_LEVEL + " from the " +
-                    NUM_ROWS + "x" + NUM_COLS + " set of levels. \n\n" + randomMessage;
-
-            alertDialogBuilder.setTitle("Perfect!")
-                    .setMessage(victoryMessage)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            NUM_LEVEL++;
-                            if (NUM_LEVEL <= Levels.getLevels(NUM_ROWS, NUM_COLS).length) {
-                                setLevel(NUM_LEVEL);
-                                setupBoard();
-                            } else {
-                                // TODO
-                            }
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
-                    .setIcon(android.R.drawable.btn_star)
-                    .show();
-
-        } else {
-
-            String victoryMessage = "You just beat level " + NUM_LEVEL + " from the " +
-                    NUM_ROWS + "x" + NUM_COLS + " set of levels. \n\n" + randomMessage;
-
-            alertDialogBuilder.setTitle("Great job!")
-                    .setMessage(victoryMessage)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            NUM_LEVEL++;
-                            if (NUM_LEVEL <= Levels.getLevels(NUM_ROWS, NUM_COLS).length) {
-                                setLevel(NUM_LEVEL);
-                                setupBoard();
-                            } else {
-                                // TODO
-                            }
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
-                    .setIcon(android.R.drawable.btn_star_big_off)
-                    .show();
-        }
-    }
-
-    private void saveUserLevelPreferences() {
-        SharedPreferences sharedPreferences = getSharedPreferences("levelInfo", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(sharedLevelPrefs, "WIN");
-        editor.apply();
+        min_num_moves = findMinimumNumberOfMoves();
     }
 
     private void initBoard() {
-
 
         for (int i = 0; i < NUM_ROWS; i++) {
             TableRow tableRowBoard = new TableRow(this);
@@ -217,6 +132,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                             // TODO : victory dance
                             displayVictoryDialogBox();
                             saveUserLevelPreferences();
+
+
                         }
 
                     }
@@ -224,10 +141,79 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
                 tableRowBoard.addView(button);
                 lights[x][y] = button;
-
             }
         }
+    }
 
+    private int findMinimumNumberOfMoves() {
+        boolean[][] solution = solver.calculateWinningConfig(light_states);
+
+        int minimumMoves = 0;
+        for (int i = 0; i < NUM_ROWS; i++) {
+            for (int j = 0; j < NUM_COLS; j++) {
+                if (solution[i][j] == Boolean.TRUE) {
+                    minimumMoves += 1;
+                }
+            }
+        }
+        return minimumMoves;
+    }
+
+    private void displayVictoryDialogBox() {
+        alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+
+        Random rand = new Random();
+        int victoryIcon, randomMessageInteger = rand.nextInt(3) + 1;
+        String victoryTitle, randomMessage;
+
+        if (randomMessageInteger == 1) {
+            randomMessage = "Onto the next level?";
+        } else if (randomMessageInteger == 2) {
+            randomMessage = "Thirsty for more?";
+        } else if (randomMessageInteger == 3) {
+            randomMessage = "Onward to glory?";
+        } else {
+            randomMessage = "";
+        }
+
+        String victoryMessage = "You just beat level " + NUM_LEVEL + " from the " +
+                NUM_ROWS + "x" + NUM_COLS + " set of levels. \n\n" + randomMessage;
+
+        if (num_moves == min_num_moves) {
+            victoryTitle = "Perfect!";
+            victoryIcon = android.R.drawable.btn_star;
+        } else {
+            victoryTitle = "Great job!";
+            victoryIcon = android.R.drawable.btn_star;
+        }
+
+        alertDialogBuilder.setTitle(victoryTitle)
+                .setMessage(victoryMessage)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        NUM_LEVEL++;
+                        if (NUM_LEVEL <= Levels.getLevels(NUM_ROWS, NUM_COLS).length) {
+                            setLevel(NUM_LEVEL);
+                            setupBoard();
+                        } else {
+                            // TODO
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setIcon(victoryIcon)
+                .show();
+    }
+
+    private void saveUserLevelPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences("levelInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(sharedLevelPrefs, "WIN");
+        editor.apply();
     }
 
     private void setLevel(int lvl) {
@@ -280,18 +266,14 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         if (!isLightOutOfBounds(top, y))
             flipLight(top, y);
 
-
         if (!isLightOutOfBounds(bot, y))
             flipLight(bot, y);
-
 
         if (!isLightOutOfBounds(x, left))
             flipLight(x, left);
 
-
         if (!isLightOutOfBounds(x, right))
             flipLight(x, right);
-
     }
 
     private void clearBoard() {
@@ -302,19 +284,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         }
         resetTimer();
         resetNumMoves();
-    }
-
-    private void setupBoard() {
-
-        clearBoard();
-        clearSolution();
-
-        for (int i = 0; i < Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL].length; i++) {
-            int x = Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL][i][0];
-            int y = Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL][i][1];
-
-            activateButton(x, y);
-        }
     }
 
     private boolean checkVictory() {
@@ -345,7 +314,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                     lights[i][j].setTextColor(Color.YELLOW);
             }
         }
-
     }
 
     @Override

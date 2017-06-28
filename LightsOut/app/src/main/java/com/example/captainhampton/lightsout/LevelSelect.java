@@ -1,18 +1,18 @@
 package com.example.captainhampton.lightsout;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import java.util.logging.Level;
 
 public class LevelSelect extends AppCompatActivity implements View.OnClickListener {
 
@@ -20,6 +20,7 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
     TableLayout tableLayoutLevelSelect;
     Button levelButton;
     TextView textViewLevelSelect;
+    String sharedLevelPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,13 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
             tableRowBoard.addView(levelButton);
         }
 
+    }
+
+    private void loadUserLevelPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences("levelInfo", Context.MODE_PRIVATE);
+
+        String test1 = sharedPreferences.getString(sharedLevelPrefs, "");
+        Log.d("TAG", test1);
     }
 
     @Override
