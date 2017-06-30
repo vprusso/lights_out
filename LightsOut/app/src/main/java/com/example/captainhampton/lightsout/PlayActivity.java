@@ -31,8 +31,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     AlertDialog.Builder alertDialogBuilder;
 
     boolean[][] light_states;
-    int num_moves, min_num_moves;
-    long level_time; // System.nanoTime()
+    int num_moves, min_num_moves, total_levels;
+    long level_time;
     private Solver solver;
 
     String sharedLevelPrefs;
@@ -48,6 +48,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         lights = new Button[NUM_ROWS][NUM_COLS];
         light_states = new boolean[NUM_ROWS][NUM_COLS];
+        total_levels = Levels.getLevels(NUM_ROWS, NUM_COLS).length;
 
         sharedLevelPrefs = String.valueOf(NUM_ROWS) + "-" + String.valueOf(NUM_COLS) + "-" + String.valueOf(NUM_LEVEL);
 
@@ -129,7 +130,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                         }
 
                         if (checkVictory()) {
-                            // TODO : victory dance
+                            // Victory dance
                             displayVictoryDialogBox();
                             saveUserLevelPreferences();
 
@@ -176,6 +177,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             randomMessage = "";
         }
 
+        String victoryStatsMessage = "";
+
         String victoryMessage = "You just beat level " + NUM_LEVEL + " from the " +
                 NUM_ROWS + "x" + NUM_COLS + " set of levels. \n\n" + randomMessage;
 
@@ -189,20 +192,21 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         alertDialogBuilder.setTitle(victoryTitle)
                 .setMessage(victoryMessage)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                .setPositiveButton("Next Level", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        NUM_LEVEL++;
-                        if (NUM_LEVEL <= Levels.getLevels(NUM_ROWS, NUM_COLS).length) {
+                        if (NUM_LEVEL < total_levels-1) {
+                            NUM_LEVEL++;
                             setLevel(NUM_LEVEL);
                             setupBoard();
                         } else {
-                            // TODO
+                            finish();
                         }
                     }
                 })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                .setNegativeButton("Play Again", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+                        setLevel(NUM_LEVEL);
+                        setupBoard();
                     }
                 })
                 .setIcon(victoryIcon)
@@ -316,11 +320,29 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         }
     }
 
+    private void showHint() {
+        boolean[][] solution = solver.calculateWinningConfig(light_states);
+
+        overLoop:
+            for (int i = 0; i < NUM_ROWS; i++) {
+                for (int j = 0; j < NUM_COLS; j++) {
+                    if (solution[i][j] == Boolean.TRUE) {
+                        lights[i][j].setTextColor(Color.YELLOW);
+                        break overLoop;
+                    }
+                }
+            }
+    }
+
     @Override
     public void onClick(View v) {
 
         if (buttonReset.isPressed()) {
             setupBoard();
+        }
+
+        if (buttonHint.isPressed()) {
+            showHint();
         }
 
         if (buttonSolve.isPressed()) {
