@@ -196,13 +196,14 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                 .setMessage(victoryMessage)
                 .setPositiveButton("Next Level", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        if (NUM_LEVEL < total_levels-1) {
-                            NUM_LEVEL++;
-                            setLevel(NUM_LEVEL);
-                            setupBoard();
-                        } else {
-                            finish();
-                        }
+                        finish();
+//                        if (NUM_LEVEL < total_levels-1) {
+//                            NUM_LEVEL++;
+//                            setLevel(NUM_LEVEL);
+//                            setupBoard();
+//                        } else {
+//                            finish();
+//                        }
                     }
                 })
                 .setNegativeButton("Play Again", new DialogInterface.OnClickListener() {
@@ -217,6 +218,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void saveUserLevelPreferences(String victoryType) {
+        // TODO: Check to make sure you're not replacing a "WIN" victory with a "PERFECT" one. 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(sharedLevelPrefs, victoryType);

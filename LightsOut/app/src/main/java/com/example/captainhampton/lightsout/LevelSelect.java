@@ -22,14 +22,23 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
     TextView textViewLevelSelect;
     String sharedLevelPrefs;
 
+    SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_select);
 
         setupVariables();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
         initLevelSelectScreen();
         initLevelSelect();
+        Log.d("TAG", "ONCREATE_LEVELSELECT");
     }
 
     private void setupVariables() {
@@ -43,6 +52,8 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
         NUM_COLS = Integer.parseInt(level_dim_split[1]);
 
         textViewLevelSelect = (TextView)findViewById(R.id.textViewLevelSelect);
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+        sharedLevelPrefs =  String.valueOf(NUM_ROWS) + "-" + String.valueOf(NUM_COLS) + "-" + String.valueOf(NUM_LEVEL);
 
     }
 
@@ -81,9 +92,20 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
             ));
 
             String level_button_text = level_count + " : " + NUM_ROWS + "x" + NUM_COLS;
+
+            String victoryType = sharedPreferences.getString(String.valueOf(NUM_ROWS) + "-" + String.valueOf(NUM_COLS) + "-" + String.valueOf(level_count), "");
+            Log.d(String.valueOf(level_count), victoryType);
+
             levelButton.setTag(Integer.toString(level_count));
 
-            levelButton.setText(level_button_text);
+            if (victoryType.equals("PERFECT")) {
+                levelButton.setText(level_button_text + "PERFECT");
+            } else if (victoryType.equals("WIN")) {
+                levelButton.setText(level_button_text + "WIN!");
+            } else {
+                levelButton.setText(level_button_text);
+            }
+
             levelButton.setTextColor(ContextCompat.getColor(this, android.R.color.holo_orange_light));
             levelButton.setTypeface(null, Typeface.BOLD);
 
@@ -114,10 +136,10 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
     }
 
     private void loadUserLevelPreferences() {
-        SharedPreferences sharedPreferences = getSharedPreferences("levelInfo", Context.MODE_PRIVATE);
+        //SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
 
-        String test1 = sharedPreferences.getString(sharedLevelPrefs, "");
-        Log.d("TAG", test1);
+        //String test1 = sharedPreferences.getString(sharedLevelPrefs, "");
+        //Log.d("TAG", test1);
     }
 
     @Override
