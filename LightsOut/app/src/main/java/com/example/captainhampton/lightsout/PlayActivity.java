@@ -218,7 +218,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void saveUserLevelPreferences(String victoryType) {
-        // TODO: Check to make sure you're not replacing a "WIN" victory with a "PERFECT" one. 
+        // TODO: Check to make sure you're not replacing a "WIN" victory with a "PERFECT" one.
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(sharedLevelPrefs, victoryType);

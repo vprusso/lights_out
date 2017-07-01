@@ -41,6 +41,14 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
         Log.d("TAG", "ONCREATE_LEVELSELECT");
     }
 
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        finish();
+        initLevelSelectScreen();
+        initLevelSelect();
+    }
+
     private void setupVariables() {
 
         tableLayoutLevelSelect = (TableLayout)findViewById(R.id.tableLayoutLevelSelect);
@@ -99,6 +107,7 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
             levelButton.setTag(Integer.toString(level_count));
 
             if (victoryType.equals("PERFECT")) {
+                Log.d("TAG", "PERFECT");
                 levelButton.setText(level_button_text + "PERFECT");
             } else if (victoryType.equals("WIN")) {
                 levelButton.setText(level_button_text + "WIN!");
