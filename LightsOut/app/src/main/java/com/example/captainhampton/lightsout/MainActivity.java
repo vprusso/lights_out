@@ -8,9 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
@@ -61,37 +65,37 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     }
 
+    private void clearSharedPreferences() {
+        getApplicationContext().getSharedPreferences(Constants.SHARED_PREFS_FILE, 0).edit().clear().apply();
+    }
+
     private void checkFirstRun() {
 
-        final String PREFS_NAME = "UserPrefsFile";
-        final String PREF_VERSION_CODE_KEY = "version_code";
-        final int DOESNT_EXIST = -1;
+        clearSharedPreferences();
 
-        // Get current version code
-        int currentVersionCode = BuildConfig.VERSION_CODE;
+        Boolean isFirstRun = getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).getBoolean("IS_FIRST_RUN", true);
 
-        // Get saved version code
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        int savedVersionCode = prefs.getInt(PREF_VERSION_CODE_KEY, DOESNT_EXIST);
+        if (isFirstRun) {
+            Log.d("TAG", "First run");
+            // If it is the first run, set the first run flag to false.
+            getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).edit().putBoolean("IS_FIRST_RUN", false).apply();
 
-        SharedPreferences.Editor editor = prefs.edit();
+            initLevelSharedPreferences();
 
-        // Check for first run or upgrade
-        if (currentVersionCode >= savedVersionCode) {
-            // This is just a normal run
-            int num_hints = prefs.getInt("num_hints", 0);
-
-            return;
-
-        } else if (savedVersionCode == DOESNT_EXIST) {
-            // This is a new install (or the user cleared the shared preferences)
-            Log.d("TAG", "NEW INSTALL OR CLEARED SHARED PREFS");
-            editor.putInt("num_hints", Constants.INIT_NUM_HINTS).apply();
-
+        } else {
+            Log.d("TAG", "Not first run");
         }
 
-        // Update the shared preferences with the current version code
-        prefs.edit().putInt(PREF_VERSION_CODE_KEY, currentVersionCode).apply();
+    }
+
+    private void initLevelSharedPreferences() {
+        for (int i = 3; i < 7; i++) {
+            for (int j = 0; j < Levels.getLevels(i,i).length; j++) {
+                String v = String.valueOf(i) + "-" + String.valueOf(i) + "-" + String.valueOf(j);
+                getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).edit().putString(v,"LOSE").apply();
+                //Log.d("TAG", String.valueOf(i) + "-" + String.valueOf(i) + "-" + String.valueOf(j));
+            }
+        }
     }
 
     public void displayBannerAd() {

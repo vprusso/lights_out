@@ -2,7 +2,6 @@ package com.example.captainhampton.lightsout;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Locale;
 import java.util.Random;
@@ -56,6 +54,10 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         setupVariables();
         initBoard();
         setupBoard();
+
+    }
+
+    private void loadSharedPreferences() {
 
     }
 
@@ -132,8 +134,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                         if (checkVictory()) {
                             // Victory dance
                             displayVictoryDialogBox();
-                            saveUserLevelPreferences();
-
 
                         }
 
@@ -165,7 +165,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         Random rand = new Random();
         int victoryIcon, randomMessageInteger = rand.nextInt(3) + 1;
-        String victoryTitle, randomMessage;
+        String victoryTitle, randomMessage, victoryType;
 
         if (randomMessageInteger == 1) {
             randomMessage = "Onto the next level?";
@@ -184,9 +184,11 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         if (num_moves == min_num_moves) {
             victoryTitle = "Perfect!";
+            victoryType = "PERFECT";
             victoryIcon = android.R.drawable.btn_star;
         } else {
             victoryTitle = "Great job!";
+            victoryType = "WIN";
             victoryIcon = android.R.drawable.btn_star;
         }
 
@@ -211,13 +213,25 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                 })
                 .setIcon(victoryIcon)
                 .show();
+        saveUserLevelPreferences(victoryType);
     }
 
-    private void saveUserLevelPreferences() {
-        SharedPreferences sharedPreferences = getSharedPreferences("levelInfo", Context.MODE_PRIVATE);
+    private void saveUserLevelPreferences(String victoryType) {
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(sharedLevelPrefs, "WIN");
+        editor.putString(sharedLevelPrefs, victoryType);
         editor.apply();
+        //getLevelSharedPreferences();
+    }
+
+    private void getLevelSharedPreferences() {
+        for (int i = 3; i < 7; i++) {
+            for (int j = 0; j < Levels.getLevels(i,i).length; j++) {
+                String v = String.valueOf(i) + "-" + String.valueOf(i) + "-" + String.valueOf(j);
+                String t = getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).getString(v,"");
+                Log.d("TAG", t);
+            }
+        }
     }
 
     private void setLevel(int lvl) {
