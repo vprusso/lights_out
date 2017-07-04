@@ -57,8 +57,11 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     }
 
-    private void loadSharedPreferences() {
+    private String getLevelSharedPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
 
+        String victoryType = sharedPreferences.getString(sharedLevelPrefs, "");
+        return victoryType;
     }
 
     private void setupVariables() {
@@ -218,23 +221,26 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void saveUserLevelPreferences(String victoryType) {
-        // TODO: Check to make sure you're not replacing a "WIN" victory with a "PERFECT" one.
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(sharedLevelPrefs, victoryType);
-        editor.apply();
-        //getLevelSharedPreferences();
-    }
+        String previousVictoryType = getLevelSharedPreferences();
 
-    private void getLevelSharedPreferences() {
-        for (int i = 3; i < 7; i++) {
-            for (int j = 0; j < Levels.getLevels(i,i).length; j++) {
-                String v = String.valueOf(i) + "-" + String.valueOf(i) + "-" + String.valueOf(j);
-                String t = getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).getString(v,"");
-                Log.d("TAG", t);
-            }
+        if (previousVictoryType.equals("LOSE") || previousVictoryType.equals("WIN")) {
+
+            SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(sharedLevelPrefs, victoryType);
+            editor.apply();
         }
     }
+
+//    private void getLevelSharedPreferences() {
+//        for (int i = 3; i < 7; i++) {
+//            for (int j = 0; j < Levels.getLevels(i,i).length; j++) {
+//                String v = String.valueOf(i) + "-" + String.valueOf(i) + "-" + String.valueOf(j);
+//                String t = getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).getString(v,"");
+//                Log.d("TAG", t);
+//            }
+//        }
+//    }
 
     private void setLevel(int lvl) {
         NUM_LEVEL = lvl;
