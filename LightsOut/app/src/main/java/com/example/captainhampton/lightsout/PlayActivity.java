@@ -29,7 +29,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     AlertDialog.Builder alertDialogBuilder;
 
     boolean[][] light_states;
-    int num_moves, min_num_moves, total_levels;
+    int num_moves, min_num_moves, total_levels, num_hints;
     long level_time;
     private Solver solver;
 
@@ -58,13 +58,35 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private String getLevelSharedPreferences() {
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+        return getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE).getString(sharedLevelPrefs, "");
+    }
 
-        String victoryType = sharedPreferences.getString(sharedLevelPrefs, "");
-        return victoryType;
+    private int getHintSharedPreferences() {
+        return getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE).getInt("NUM_HINTS", 0);
+    }
+
+    private void incrementHintSharedPreferences(int increment) {
+        num_hints = getHintSharedPreferences();
+        num_hints += increment;
+        saveHintSharedPreferences(num_hints);
+    }
+
+    private void decrementHintSharedPreferences(int decrement) {
+        num_hints = getHintSharedPreferences();
+        num_hints -= decrement;
+        saveHintSharedPreferences(num_hints);
+    }
+
+    private void saveHintSharedPreferences(int hints) {
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("NUM_HINTS", hints);
+        editor.apply();
     }
 
     private void setupVariables() {
+
+        num_hints = getHintSharedPreferences();
 
         tableLayoutBoard = (TableLayout)findViewById(R.id.tableLayoutBoard);
 
@@ -73,6 +95,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         buttonHint = (Button)findViewById(R.id.buttonHint);
         buttonHint.setOnClickListener(this);
+        buttonHint.setText("Hints(" + String.valueOf(num_hints) + ")");
 
         buttonSolve = (Button)findViewById(R.id.buttonSolve);
         buttonSolve.setOnClickListener(this);
@@ -189,6 +212,10 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             victoryTitle = "Perfect!";
             victoryType = "PERFECT";
             victoryIcon = android.R.drawable.btn_star;
+            // Make sure that you can't just beat the same level over and over to boost hints.
+            if (getLevelSharedPreferences().equals("WIN") || getLevelSharedPreferences().equals("LOSE")) {
+                incrementHintSharedPreferences(Constants.PERFECT_HINT_INCREMENT);
+            }
         } else {
             victoryTitle = "Great job!";
             victoryType = "WIN";
@@ -197,16 +224,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         alertDialogBuilder.setTitle(victoryTitle)
                 .setMessage(victoryMessage)
-                .setPositiveButton("Next Level", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Level Select", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
-//                        if (NUM_LEVEL < total_levels-1) {
-//                            NUM_LEVEL++;
-//                            setLevel(NUM_LEVEL);
-//                            setupBoard();
-//                        } else {
-//                            finish();
-//                        }
                     }
                 })
                 .setNegativeButton("Play Again", new DialogInterface.OnClickListener() {
@@ -231,16 +251,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             editor.apply();
         }
     }
-
-//    private void getLevelSharedPreferences() {
-//        for (int i = 3; i < 7; i++) {
-//            for (int j = 0; j < Levels.getLevels(i,i).length; j++) {
-//                String v = String.valueOf(i) + "-" + String.valueOf(i) + "-" + String.valueOf(j);
-//                String t = getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).getString(v,"");
-//                Log.d("TAG", t);
-//            }
-//        }
-//    }
 
     private void setLevel(int lvl) {
         NUM_LEVEL = lvl;
@@ -356,6 +366,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             }
     }
 
+
     @Override
     public void onClick(View v) {
 
@@ -364,7 +375,13 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         }
 
         if (buttonHint.isPressed()) {
-            showHint();
+            if (num_hints > 0) {
+                showHint();
+                decrementHintSharedPreferences(1);
+                buttonHint.setText("Hints(" + String.valueOf(num_hints) + ")");
+            } else {
+                // TODO : Toast
+            }
         }
 
         if (buttonSolve.isPressed()) {

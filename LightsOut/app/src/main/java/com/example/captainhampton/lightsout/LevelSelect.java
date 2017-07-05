@@ -109,6 +109,7 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
             if (victoryType.equals("PERFECT")) {
                 Log.d("TAG", "PERFECT");
                 levelButton.setText(level_button_text + "PERFECT");
+
             } else if (victoryType.equals("WIN")) {
                 levelButton.setText(level_button_text + "WIN!");
             } else {

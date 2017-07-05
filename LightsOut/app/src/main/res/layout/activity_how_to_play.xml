@@ -23,6 +23,7 @@
         <TextView
             android:id="@+id/textViewHowToPlayIntro"
             style="@style/CategoryStyle"
+            android:textColor="@android:color/holo_orange_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="21sp"
@@ -37,6 +38,7 @@
         <TextView
             android:id="@+id/textViewHowToPlayParagraph"
             style="@style/CategoryStyle"
+            android:textColor="@android:color/holo_orange_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -51,6 +53,7 @@
         <TextView
             android:id="@+id/textViewHowToPlayEnding"
             style="@style/CategoryStyle"
+            android:textColor="@android:color/holo_orange_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"

@@ -61,16 +61,13 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         }
     }
 
-    private void loadSharedPreferences() {
-
-    }
-
     private void clearSharedPreferences() {
         getApplicationContext().getSharedPreferences(Constants.SHARED_PREFS_FILE, 0).edit().clear().apply();
     }
 
     private void checkFirstRun() {
 
+        // TODO : Comment this out:
         clearSharedPreferences();
 
         Boolean isFirstRun = getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).getBoolean("IS_FIRST_RUN", true);
@@ -81,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).edit().putBoolean("IS_FIRST_RUN", false).apply();
 
             initLevelSharedPreferences();
+            initHintSharedPreferences();
 
         } else {
             Log.d("TAG", "Not first run");
@@ -91,11 +89,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     private void initLevelSharedPreferences() {
         for (int i = 3; i < 7; i++) {
             for (int j = 0; j < Levels.getLevels(i,i).length; j++) {
-                String v = String.valueOf(i) + "-" + String.valueOf(i) + "-" + String.valueOf(j);
-                getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).edit().putString(v,"LOSE").apply();
+                String levelName = String.valueOf(i) + "-" + String.valueOf(i) + "-" + String.valueOf(j);
+                getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).edit().putString(levelName,"LOSE").apply();
                 //Log.d("TAG", String.valueOf(i) + "-" + String.valueOf(i) + "-" + String.valueOf(j));
             }
         }
+    }
+
+    private void initHintSharedPreferences() {
+        getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).edit().putInt("NUM_HINTS", Constants.INIT_NUM_HINTS).apply();
     }
 
     public void displayBannerAd() {
