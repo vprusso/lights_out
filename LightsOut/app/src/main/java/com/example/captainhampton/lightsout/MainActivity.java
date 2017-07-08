@@ -1,23 +1,20 @@
 package com.example.captainhampton.lightsout;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View.OnClickListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
+    Utils utils;
     Button buttonPlay, buttonHowToPlay, buttonAbout;
 
     @Override
@@ -28,8 +25,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         displayBannerAd();
         setupVariables();
 
-        checkFirstRun();
-
+        utils.checkFirstRun();
     }
 
     private void setupVariables() {
@@ -41,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
         buttonAbout = (Button)findViewById(R.id.buttonAbout);
         buttonAbout.setOnClickListener(this);
+
+        utils = new Utils(this);
     }
 
     public void onClick(View v) {
@@ -59,45 +57,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(aboutIntent);
         }
-    }
-
-    private void clearSharedPreferences() {
-        getApplicationContext().getSharedPreferences(Constants.SHARED_PREFS_FILE, 0).edit().clear().apply();
-    }
-
-    private void checkFirstRun() {
-
-        // TODO : Comment this out:
-        clearSharedPreferences();
-
-        Boolean isFirstRun = getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).getBoolean("IS_FIRST_RUN", true);
-
-        if (isFirstRun) {
-            Log.d("TAG", "First run");
-            // If it is the first run, set the first run flag to false.
-            getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).edit().putBoolean("IS_FIRST_RUN", false).apply();
-
-            initLevelSharedPreferences();
-            initHintSharedPreferences();
-
-        } else {
-            Log.d("TAG", "Not first run");
-        }
-
-    }
-
-    private void initLevelSharedPreferences() {
-        for (int i = 3; i < 7; i++) {
-            for (int j = 0; j < Levels.getLevels(i,i).length; j++) {
-                String levelName = String.valueOf(i) + "-" + String.valueOf(i) + "-" + String.valueOf(j);
-                getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).edit().putString(levelName,"LOSE").apply();
-                //Log.d("TAG", String.valueOf(i) + "-" + String.valueOf(i) + "-" + String.valueOf(j));
-            }
-        }
-    }
-
-    private void initHintSharedPreferences() {
-        getSharedPreferences(Constants.SHARED_PREFS_FILE, MODE_PRIVATE).edit().putInt("NUM_HINTS", Constants.INIT_NUM_HINTS).apply();
     }
 
     public void displayBannerAd() {

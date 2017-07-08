@@ -107,11 +107,9 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
             levelButton.setTag(Integer.toString(level_count));
 
             if (victoryType.equals("PERFECT")) {
-                Log.d("TAG", "PERFECT");
-                levelButton.setText(level_button_text + "PERFECT");
-
+                levelButton.setText(level_button_text + " (PERFECT) ");
             } else if (victoryType.equals("WIN")) {
-                levelButton.setText(level_button_text + "WIN!");
+                levelButton.setText(level_button_text + " (WIN) ");
             } else {
                 levelButton.setText(level_button_text);
             }
@@ -143,13 +141,6 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
             tableRowBoard.addView(levelButton);
         }
 
-    }
-
-    private void loadUserLevelPreferences() {
-        //SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
-
-        //String test1 = sharedPreferences.getString(sharedLevelPrefs, "");
-        //Log.d("TAG", test1);
     }
 
     @Override

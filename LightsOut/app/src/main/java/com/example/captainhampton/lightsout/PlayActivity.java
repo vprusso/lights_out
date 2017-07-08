@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Locale;
 import java.util.Random;
@@ -133,17 +134,18 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
                 final int x = i;
                 final int y = j;
-                Button button = new Button(this);
-                button.setLayoutParams(new TableRow.LayoutParams(
+                Button boardButton = new Button(this);
+                boardButton.setLayoutParams(new TableRow.LayoutParams(
                         TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT,
                         1.0f
                 ));
 
-                button.setText("" + x + "," + y);
+                boardButton.setText("" + x + "," + y);
+                boardButton.setBackgroundResource(R.drawable.gradient_background);
                 // make text not clip on small buttons
-                button.setPadding(0, 0, 0, 0);
-                button.setOnClickListener(new View.OnClickListener() {
+                boardButton.setPadding(0, 0, 0, 0);
+                boardButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -166,8 +168,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                     }
                 });
 
-                tableRowBoard.addView(button);
-                lights[x][y] = button;
+                tableRowBoard.addView(boardButton);
+                lights[x][y] = boardButton;
             }
         }
     }
@@ -380,7 +382,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                 decrementHintSharedPreferences(1);
                 buttonHint.setText("Hints(" + String.valueOf(num_hints) + ")");
             } else {
-                // TODO : Toast
+                Toast.makeText(getApplicationContext(), "No more hints!", Toast.LENGTH_SHORT).show();
             }
         }
 
