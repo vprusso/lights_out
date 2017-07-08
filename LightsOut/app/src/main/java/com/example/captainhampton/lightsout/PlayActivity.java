@@ -36,6 +36,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     String sharedLevelPrefs;
 
+    Utils utils = new Utils(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,42 +54,16 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         sharedLevelPrefs = String.valueOf(NUM_ROWS) + "-" + String.valueOf(NUM_COLS) + "-" + String.valueOf(NUM_LEVEL);
 
         solver = new Solver(NUM_ROWS, NUM_COLS, NUM_LEVEL);
+
         setupVariables();
         initBoard();
         setupBoard();
 
     }
 
-    private String getLevelSharedPreferences() {
-        return getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE).getString(sharedLevelPrefs, "");
-    }
-
-    private int getHintSharedPreferences() {
-        return getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE).getInt("NUM_HINTS", 0);
-    }
-
-    private void incrementHintSharedPreferences(int increment) {
-        num_hints = getHintSharedPreferences();
-        num_hints += increment;
-        saveHintSharedPreferences(num_hints);
-    }
-
-    private void decrementHintSharedPreferences(int decrement) {
-        num_hints = getHintSharedPreferences();
-        num_hints -= decrement;
-        saveHintSharedPreferences(num_hints);
-    }
-
-    private void saveHintSharedPreferences(int hints) {
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("NUM_HINTS", hints);
-        editor.apply();
-    }
-
     private void setupVariables() {
 
-        num_hints = getHintSharedPreferences();
+        num_hints = utils.getHintSharedPreferences();
 
         tableLayoutBoard = (TableLayout)findViewById(R.id.tableLayoutBoard);
 
@@ -215,8 +191,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             victoryType = "PERFECT";
             victoryIcon = android.R.drawable.btn_star;
             // Make sure that you can't just beat the same level over and over to boost hints.
-            if (getLevelSharedPreferences().equals("WIN") || getLevelSharedPreferences().equals("LOSE")) {
-                incrementHintSharedPreferences(Constants.PERFECT_HINT_INCREMENT);
+            if (utils.getLevelSharedPreferences(sharedLevelPrefs).equals("WIN") || utils.getLevelSharedPreferences(sharedLevelPrefs).equals("LOSE")) {
+                num_hints = utils.incrementHintSharedPreferences(Constants.PERFECT_HINT_INCREMENT);
             }
         } else {
             victoryTitle = "Great job!";
@@ -243,7 +219,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void saveUserLevelPreferences(String victoryType) {
-        String previousVictoryType = getLevelSharedPreferences();
+        String previousVictoryType = utils.getLevelSharedPreferences(sharedLevelPrefs);
 
         if (previousVictoryType.equals("LOSE") || previousVictoryType.equals("WIN")) {
 
@@ -379,7 +355,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         if (buttonHint.isPressed()) {
             if (num_hints > 0) {
                 showHint();
-                decrementHintSharedPreferences(1);
+                num_hints = utils.decrementHintSharedPreferences(1);
                 buttonHint.setText("Hints(" + String.valueOf(num_hints) + ")");
             } else {
                 Toast.makeText(getApplicationContext(), "No more hints!", Toast.LENGTH_SHORT).show();
