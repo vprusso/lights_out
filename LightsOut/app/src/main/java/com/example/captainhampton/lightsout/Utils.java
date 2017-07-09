@@ -55,6 +55,18 @@ public class Utils {
         return context.getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE).getString(sharedLevelPrefs, "");
     }
 
+    public void saveUserLevelPreferences(String victoryType, String sharedLevelPrefs) {
+        String previousVictoryType = getLevelSharedPreferences(sharedLevelPrefs);
+
+        if (previousVictoryType.equals("LOSE") || previousVictoryType.equals("WIN")) {
+
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(sharedLevelPrefs, victoryType);
+            editor.apply();
+        }
+    }
+
     public int getHintSharedPreferences() {
         return context.getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE).getInt("NUM_HINTS", 0);
     }

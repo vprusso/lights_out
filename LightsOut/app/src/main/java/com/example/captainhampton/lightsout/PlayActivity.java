@@ -43,9 +43,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level);
 
-        NUM_ROWS = getIntent().getIntExtra("NUM_ROWS",0);
-        NUM_COLS = getIntent().getIntExtra("NUM_COLS",0);
-        NUM_LEVEL = getIntent().getIntExtra("NUM_LEVEL",0);
+        NUM_ROWS = getIntent().getIntExtra("NUM_ROWS", 0);
+        NUM_COLS = getIntent().getIntExtra("NUM_COLS", 0);
+        NUM_LEVEL = getIntent().getIntExtra("NUM_LEVEL", 0);
 
         lights = new Button[NUM_ROWS][NUM_COLS];
         light_states = new boolean[NUM_ROWS][NUM_COLS];
@@ -58,6 +58,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         setupVariables();
         initBoard();
         setupBoard();
+
+        min_num_moves = findMinimumNumberOfMoves();
 
     }
 
@@ -93,7 +95,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
             activateButton(x, y);
         }
-        min_num_moves = findMinimumNumberOfMoves();
     }
 
     private void initBoard() {
@@ -215,19 +216,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                 })
                 .setIcon(victoryIcon)
                 .show();
-        saveUserLevelPreferences(victoryType);
-    }
-
-    private void saveUserLevelPreferences(String victoryType) {
-        String previousVictoryType = utils.getLevelSharedPreferences(sharedLevelPrefs);
-
-        if (previousVictoryType.equals("LOSE") || previousVictoryType.equals("WIN")) {
-
-            SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(sharedLevelPrefs, victoryType);
-            editor.apply();
-        }
+        utils.saveUserLevelPreferences(victoryType, sharedLevelPrefs);
     }
 
     private void setLevel(int lvl) {
@@ -343,7 +332,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                 }
             }
     }
-
 
     @Override
     public void onClick(View v) {
