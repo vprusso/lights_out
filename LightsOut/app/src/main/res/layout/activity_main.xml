@@ -22,7 +22,6 @@
         android:layout_height="match_parent"
         android:background="@drawable/gradient_background">
 
-
         <TextView
             android:id="@+id/textViewLightsOutTitle"
             style="@style/LightsOutStyle"
@@ -37,51 +36,35 @@
             android:textSize="36sp"
             android:textStyle="bold" />
 
-
-        <Button
-            android:id="@+id/buttonPlay"
-            android:textColor="@android:color/holo_orange_light"
-            android:background="@drawable/gradient_background"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
+        <at.markushi.ui.CircleButton
+            android:id="@+id/circleButtonPlay"
+            android:layout_height="128dp"
+            android:layout_width="128dp"
+            android:layout_centerInParent="true"
             android:layout_below="@+id/textViewLightsOutTitle"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="35dp"
-            android:text="@string/play"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textStyle="bold" />
+            app:cb_color="#6cecce"
+            app:cb_pressedRingWidth="16dp"
+            android:src="@drawable/ic_lights_out_play"/>
 
-        <Button
-            android:id="@+id/buttonHowToPlay"
-            android:background="@drawable/gradient_background"
-            android:textColor="@android:color/holo_orange_light"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:text="@string/how_to_play"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textStyle="bold"
-            android:layout_below="@+id/buttonPlay"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="35dp" />
+        <at.markushi.ui.CircleButton
+            android:id="@+id/circleButtonHowToPlay"
+            android:layout_height="128dp"
+            android:layout_width="128dp"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/circleButtonPlay"
+            app:cb_color="#6cecce"
+            app:cb_pressedRingWidth="16dp"
+            android:src="@drawable/ic_how_to_play"/>
 
-
-        <Button
-            android:id="@+id/buttonAbout"
-            android:background="@drawable/gradient_background"
-            android:textColor="@android:color/holo_orange_light"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:text="@string/about"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textStyle="bold"
-            android:layout_below="@+id/buttonHowToPlay"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="35dp" />
+        <at.markushi.ui.CircleButton
+            android:id="@+id/circleButtonAbout"
+            android:layout_height="128dp"
+            android:layout_width="128dp"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/circleButtonHowToPlay"
+            app:cb_color="#6cecce"
+            app:cb_pressedRingWidth="16dp"
+            android:src="@drawable/ic_about"/>
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/mainAdView"

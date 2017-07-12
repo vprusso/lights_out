@@ -19,6 +19,12 @@ android {
     }
 }
 
+repositories{
+    mavenCentral()
+    mavenLocal()
+}
+
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -30,4 +36,5 @@ dependencies {
     compile 'com.google.firebase:firebase-ads:9.0.2'
     compile 'org.ejml:all:0.29'
     testCompile 'junit:junit:4.12'
+    compile 'com.github.markushi:circlebutton:1.1'
 }

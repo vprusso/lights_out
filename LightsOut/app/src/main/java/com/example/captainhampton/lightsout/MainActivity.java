@@ -1,7 +1,6 @@
 package com.example.captainhampton.lightsout;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View.OnClickListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,11 +10,12 @@ import android.widget.Button;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import at.markushi.ui.CircleButton;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     Utils utils;
-    Button buttonPlay, buttonHowToPlay, buttonAbout;
+    CircleButton circleButtonPlay, circleButtonHowToPlay, circleButtonAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,31 +29,32 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void setupVariables() {
-        buttonPlay = (Button)findViewById(R.id.buttonPlay);
-        buttonPlay.setOnClickListener(this);
 
-        buttonHowToPlay = (Button)findViewById(R.id.buttonHowToPlay);
-        buttonHowToPlay.setOnClickListener(this);
+        circleButtonPlay = (CircleButton)findViewById(R.id.circleButtonPlay);
+        circleButtonPlay.setOnClickListener(this);
 
-        buttonAbout = (Button)findViewById(R.id.buttonAbout);
-        buttonAbout.setOnClickListener(this);
+        circleButtonHowToPlay = (CircleButton)findViewById(R.id.circleButtonHowToPlay);
+        circleButtonHowToPlay.setOnClickListener(this);
+
+        circleButtonAbout = (CircleButton)findViewById(R.id.circleButtonAbout);
+        circleButtonAbout.setOnClickListener(this);
 
         utils = new Utils(this);
     }
 
     public void onClick(View v) {
 
-        if (buttonPlay.isPressed()) {
+        if (circleButtonPlay.isPressed()) {
             Intent levelDimSelectIntent = new Intent(MainActivity.this, LevelDimSelect.class);
             startActivity(levelDimSelectIntent);
         }
 
-        if (buttonHowToPlay.isPressed()) {
+        if (circleButtonHowToPlay.isPressed()) {
             Intent howToPlayIntent = new Intent(MainActivity.this, HowToPlayActivity.class);
             startActivity(howToPlayIntent);
         }
 
-        if (buttonAbout.isPressed()) {
+        if (circleButtonAbout.isPressed()) {
             Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(aboutIntent);
         }

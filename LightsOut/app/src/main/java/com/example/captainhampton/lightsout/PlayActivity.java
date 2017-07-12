@@ -118,7 +118,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                         1.0f
                 ));
 
-                boardButton.setText("" + x + "," + y);
+                //boardButton.setText("" + x + "," + y);
                 boardButton.setBackgroundResource(R.drawable.gradient_background);
                 // make text not clip on small buttons
                 boardButton.setPadding(0, 0, 0, 0);
@@ -235,12 +235,14 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     private void activateButton(int x, int y) {
         light_states[x][y] = Boolean.TRUE;
-        lights[x][y].setBackgroundColor(Color.RED);
+        //lights[x][y].setBackgroundColor(Color.RED);
+        lights[x][y].setBackgroundResource(R.drawable.light_on);
     }
 
     private void deactivateButton(int x, int y) {
         light_states[x][y] = Boolean.FALSE;
-        lights[x][y].setBackgroundColor(Color.WHITE);
+        //lights[x][y].setBackgroundColor(Color.WHITE);
+        lights[x][y].setBackgroundResource(R.drawable.light_off);
     }
 
     private void flipLight(int x, int y) {
@@ -314,7 +316,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
                 if (solution[i][j] == Boolean.TRUE)
-                    lights[i][j].setTextColor(Color.YELLOW);
+                    lights[i][j].setBackgroundResource(R.drawable.light_hint);
+                    //lights[i][j].setTextColor(Color.YELLOW);
             }
         }
     }
@@ -326,7 +329,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             for (int i = 0; i < NUM_ROWS; i++) {
                 for (int j = 0; j < NUM_COLS; j++) {
                     if (solution[i][j] == Boolean.TRUE) {
-                        lights[i][j].setTextColor(Color.YELLOW);
+                        //lights[i][j].setTextColor(Color.YELLOW);
+                        lights[i][j].setBackgroundResource(R.drawable.light_hint);
                         break overLoop;
                     }
                 }
