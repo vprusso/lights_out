@@ -239,13 +239,11 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     private void activateButton(int x, int y) {
         light_states[x][y] = Boolean.TRUE;
-        //lights[x][y].setBackgroundColor(Color.RED);
         lights[x][y].setBackgroundResource(R.drawable.light_on);
     }
 
     private void deactivateButton(int x, int y) {
         light_states[x][y] = Boolean.FALSE;
-        //lights[x][y].setBackgroundColor(Color.WHITE);
         lights[x][y].setBackgroundResource(R.drawable.light_off);
     }
 

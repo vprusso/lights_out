@@ -3,6 +3,7 @@ package com.example.captainhampton.lightsout;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -97,7 +98,7 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
             tableLayoutLevelSelect.addView(tableRowBoard);
 
             levelButton = new Button(this);
-            //levelButton.setTextSize(20);
+            levelButton.setTextSize(20);
             levelButton.setLayoutParams(new TableRow.LayoutParams(
                     2000,
                     300,
@@ -113,30 +114,16 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
 
             levelButton.setTag(Integer.toString(level_count));
 
-//            if (victoryType.equals("PERFECT")) {
-//                levelButton.setText(level_button_text + " (PERFECT) ");
-//            } else if (victoryType.equals("WIN")) {
-//                levelButton.setText(level_button_text + " (WIN) ");
-//            } else {
-//                levelButton.setText(level_button_text);
-//            }
-//
-//            levelButton.setTextColor(ContextCompat.getColor(this, android.R.color.holo_orange_light));
-//            levelButton.setTypeface(null, Typeface.BOLD);
+            if (victoryType.equals("PERFECT")) {
+                levelButton.setText("PERFECT");
+            } else if (victoryType.equals("WIN")) {
+                levelButton.setText("WIN");
+            } else {
+                //levelButton.setText(level_button_text);
+            }
 
-            //levelButton.setBackgroundResource(R.drawable.gradient_background);
-            //String uri = "drawable/lvl_3_3_0";
-
-//            android:gravity="center_horizontal|top"
-//            android:layout_height="150dp"
-//            android:layout_width="150dp"
-//            android:layout_centerInParent="true"
-//            app:cb_color="@android:color/holo_orange_light"
-//            app:cb_pressedRingWidth="16dp"
-//            android:src="@drawable/dim_4_4"
-//            android:layout_below="@+id/buttonSelect3x3"
-//            android:layout_centerHorizontal="true"
-//            android:layout_marginTop="35dp"
+            levelButton.setTextColor(ContextCompat.getColor(this, android.R.color.holo_orange_light));
+            levelButton.setTypeface(null, Typeface.BOLD);
 
             String uri = getLevelDrawableResource(level_count);
             int path = getResources().getIdentifier(uri, null, getPackageName());
