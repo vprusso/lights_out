@@ -20,7 +20,7 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
 
     int NUM_ROWS, NUM_COLS, NUM_LEVEL;
     TableLayout tableLayoutLevelSelect;
-    CircleButton levelButton;
+    Button levelButton;
     TextView textViewLevelSelect;
     String sharedLevelPrefs;
 
@@ -76,9 +76,9 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
         int level_count = 0;
         int total_levels = Levels.getLevels(NUM_ROWS,NUM_COLS).length;
 
-        int leftMargin=10;
+        int leftMargin=350;
         int topMargin=2;
-        int rightMargin=10;
+        int rightMargin=450;
         int bottomMargin=100;
 
         for (int i = 0; i < total_levels; i++) {
@@ -90,15 +90,19 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
                     1.0f
             );
             tableRowParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
+            tableRowParams.height = 20000;
+            tableRowParams.width = 300;
             tableRowBoard.setLayoutParams(tableRowParams);
 
             tableLayoutLevelSelect.addView(tableRowBoard);
 
-            levelButton = new CircleButton(this);
+            levelButton = new Button(this);
             //levelButton.setTextSize(20);
             levelButton.setLayoutParams(new TableRow.LayoutParams(
-                    TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.MATCH_PARENT,
+                    2000,
+                    300,
+                    //TableRow.LayoutParams.MATCH_PARENT,
+                    //TableRow.LayoutParams.MATCH_PARENT,
                     1.0f
             ));
 

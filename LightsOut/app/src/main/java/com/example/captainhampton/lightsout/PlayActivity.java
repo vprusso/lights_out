@@ -29,7 +29,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     TableLayout tableLayoutBoard;
     AlertDialog.Builder alertDialogBuilder;
 
-    boolean[][] light_states;
+    boolean[][] light_states, light_hints;
     int num_moves, min_num_moves, total_levels, num_hints, num_solutions;
     long level_time;
     private Solver solver;
@@ -49,6 +49,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         lights = new Button[NUM_ROWS][NUM_COLS];
         light_states = new boolean[NUM_ROWS][NUM_COLS];
+        light_hints = new boolean[NUM_ROWS][NUM_COLS];
         total_levels = Levels.getLevels(NUM_ROWS, NUM_COLS).length;
 
         sharedLevelPrefs = String.valueOf(NUM_ROWS) + "-" + String.valueOf(NUM_COLS) + "-" + String.valueOf(NUM_LEVEL);
@@ -135,7 +136,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                             clearSolution();
                             num_moves++;
                             textViewNumMoves.setText(String.format(Locale.US, "%d", num_moves));
-                            textViewLevelTime.setText(String.format(Locale.US, "%d", level_time));
+                            //textViewLevelTime.setText(String.format(Locale.US, "%d", level_time));
                         }
 
                         if (checkVictory()) {
