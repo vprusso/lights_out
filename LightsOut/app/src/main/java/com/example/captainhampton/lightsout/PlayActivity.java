@@ -30,7 +30,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     AlertDialog.Builder alertDialogBuilder;
 
     boolean[][] light_states;
-    int num_moves, min_num_moves, total_levels, num_hints;
+    int num_moves, min_num_moves, total_levels, num_hints, num_solutions;
     long level_time;
     private Solver solver;
 
@@ -66,6 +66,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     private void setupVariables() {
 
         num_hints = utils.getHintSharedPreferences();
+        num_solutions = utils.getSolutionSharedPreferences();
 
         tableLayoutBoard = (TableLayout)findViewById(R.id.tableLayoutBoard);
 
@@ -78,6 +79,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         buttonSolve = (Button)findViewById(R.id.buttonSolve);
         buttonSolve.setOnClickListener(this);
+        buttonSolve.setText("Solve(" + String.valueOf(num_solutions) + ")");
 
         textViewNumMoves = (TextView)findViewById(R.id.textViewNumMoves);
         textViewLevelTime = (TextView)findViewById(R.id.textViewLevelTime);
@@ -194,6 +196,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             // Make sure that you can't just beat the same level over and over to boost hints.
             if (utils.getLevelSharedPreferences(sharedLevelPrefs).equals("WIN") || utils.getLevelSharedPreferences(sharedLevelPrefs).equals("LOSE")) {
                 num_hints = utils.incrementHintSharedPreferences(Constants.PERFECT_HINT_INCREMENT);
+                num_solutions = utils.incrementSolutionSharedPreferences(Constants.PERFECT_SOLUTION_INCREMENT);
             }
         } else {
             victoryTitle = "Great job!";
@@ -355,6 +358,14 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         }
 
         if (buttonSolve.isPressed()) {
+            if (num_solutions >0) {
+                showSolution();
+                num_solutions = utils.decrementSolutionSharedPreferences(1);
+                buttonSolve.setText("Solve(" + String.valueOf(num_solutions) + ")");
+            } else {
+                Toast.makeText(getApplicationContext(), "No more solutions!", Toast.LENGTH_SHORT).show();
+
+            }
             showSolution();
         }
 

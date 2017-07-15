@@ -26,6 +26,7 @@ public class Utils {
 
             initLevelSharedPreferences();
             initHintSharedPreferences();
+            initSolutionSharedPreferences();
 
         } else {
             Log.d("TAG", "Not first run");
@@ -51,6 +52,10 @@ public class Utils {
         context.getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE).edit().putInt("NUM_HINTS", Constants.INIT_NUM_HINTS).apply();
     }
 
+    public void initSolutionSharedPreferences() {
+        context.getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE).edit().putInt("NUM_SOLUTIONS", Constants.INIT_NUM_SOLUTIONS).apply();
+    }
+
     public String getLevelSharedPreferences(String sharedLevelPrefs) {
         return context.getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE).getString(sharedLevelPrefs, "");
     }
@@ -71,6 +76,10 @@ public class Utils {
         return context.getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE).getInt("NUM_HINTS", 0);
     }
 
+    public int getSolutionSharedPreferences() {
+        return context.getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE).getInt("NUM_SOLUTIONS", 0);
+    }
+
     public int incrementHintSharedPreferences(int increment) {
         int num_hints = getHintSharedPreferences();
         num_hints += increment;
@@ -78,11 +87,32 @@ public class Utils {
         return num_hints;
     }
 
+    public int incrementSolutionSharedPreferences(int increment) {
+        int num_solutions = getSolutionSharedPreferences();
+        num_solutions += increment;
+        saveSolutionSharedPreferences(num_solutions);
+        return num_solutions;
+    }
+
+    public int decrementSolutionSharedPreferences(int decrement) {
+        int num_solutions = getSolutionSharedPreferences();
+        num_solutions -= decrement;
+        saveSolutionSharedPreferences(num_solutions);
+        return num_solutions;
+    }
+
     public int decrementHintSharedPreferences(int decrement) {
         int num_hints = getHintSharedPreferences();
         num_hints -= decrement;
         saveHintSharedPreferences(num_hints);
         return num_hints;
+    }
+
+    public void saveSolutionSharedPreferences(int solutions) {
+        SharedPreferences sharedPreferences = context.getApplicationContext().getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("NUM_SOLUTIONS", solutions);
+        editor.apply();
     }
 
     public void saveHintSharedPreferences(int hints) {
