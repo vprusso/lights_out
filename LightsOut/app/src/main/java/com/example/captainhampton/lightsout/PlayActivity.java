@@ -1,13 +1,10 @@
 package com.example.captainhampton.lightsout;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -25,13 +22,12 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     Button buttonHint, buttonReset, buttonSolve;
     Button[][] lights;
-    TextView textViewNumMoves, textViewLevelTime;
+    TextView textViewNumMoves, textViewLevelTitle;
     TableLayout tableLayoutBoard;
     AlertDialog.Builder alertDialogBuilder;
 
     boolean[][] light_states, light_hints;
     int num_moves, min_num_moves, total_levels, num_hints, num_solutions;
-    long level_time;
     private Solver solver;
 
     String sharedLevelPrefs;
@@ -83,8 +79,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         buttonSolve.setText("Solve(" + String.valueOf(num_solutions) + ")");
 
         textViewNumMoves = (TextView)findViewById(R.id.textViewNumMoves);
-        textViewLevelTime = (TextView)findViewById(R.id.textViewLevelTime);
-
+        textViewLevelTitle = (TextView)findViewById(R.id.textViewLevelTitle);
+        textViewLevelTitle.setText(String.valueOf(NUM_LEVEL));
     }
 
     private void setupBoard() {
@@ -136,7 +132,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                             clearSolution();
                             num_moves++;
                             textViewNumMoves.setText(String.format(Locale.US, "%d", num_moves));
-                            //textViewLevelTime.setText(String.format(Locale.US, "%d", level_time));
                         }
 
                         if (checkVictory()) {
@@ -185,8 +180,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             randomMessage = "";
         }
 
-        String victoryStatsMessage = "";
-
         String victoryMessage = "You just beat level " + NUM_LEVEL + " from the " +
                 NUM_ROWS + "x" + NUM_COLS + " set of levels. \n\n" + randomMessage;
 
@@ -225,11 +218,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     private void setLevel(int lvl) {
         NUM_LEVEL = lvl;
-    }
-
-    private void resetTimer() {
-        level_time = 0;
-        textViewLevelTime.setText(String.format(Locale.US, "%d", level_time));
     }
 
     private void resetNumMoves() {
@@ -289,7 +277,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                 deactivateButton(i, j);
             }
         }
-        resetTimer();
         resetNumMoves();
     }
 

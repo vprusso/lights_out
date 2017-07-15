@@ -24,18 +24,28 @@
             </intent-filter>
         </activity>
         <activity
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:name=".PlayActivity"
             android:label="@string/play" />
         <activity
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:name=".HowToPlayActivity"
             android:label="@string/how_to_play" />
         <activity
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:name=".AboutActivity"
             android:label="@string/about" />
         <activity
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:name=".LevelDimSelect"
             android:label="@string/level_dim_select" />
         <activity
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:name=".LevelSelect"
             android:label="@string/level_select" />
 

@@ -83,15 +83,15 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textViewMoves"
+                android:id="@+id/textViewLevelName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/moves"
+                android:text="@string/level_name"
                 android:layout_column="1"/>
 
             <TextView
-                android:id="@+id/textViewNumMoves"
+                android:id="@+id/textViewLevelTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -104,15 +104,15 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textViewTimeTitle"
+                android:id="@+id/textViewMoves"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/time"
+                android:text="@string/moves"
                 android:layout_column="1"/>
 
             <TextView
-                android:id="@+id/textViewLevelTime"
+                android:id="@+id/textViewNumMoves"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
