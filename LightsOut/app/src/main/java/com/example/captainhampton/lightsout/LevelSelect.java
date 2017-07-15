@@ -14,13 +14,16 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import at.markushi.ui.CircleButton;
+
 public class LevelSelect extends AppCompatActivity implements View.OnClickListener {
 
     int NUM_ROWS, NUM_COLS, NUM_LEVEL;
     TableLayout tableLayoutLevelSelect;
-    Button levelButton;
+    CircleButton levelButton;
     TextView textViewLevelSelect;
     String sharedLevelPrefs;
+
 
     SharedPreferences sharedPreferences;
 
@@ -91,8 +94,8 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
 
             tableLayoutLevelSelect.addView(tableRowBoard);
 
-            levelButton = new Button(this);
-            levelButton.setTextSize(20);
+            levelButton = new CircleButton(this);
+            //levelButton.setTextSize(20);
             levelButton.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.MATCH_PARENT,
@@ -106,18 +109,34 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
 
             levelButton.setTag(Integer.toString(level_count));
 
-            if (victoryType.equals("PERFECT")) {
-                levelButton.setText(level_button_text + " (PERFECT) ");
-            } else if (victoryType.equals("WIN")) {
-                levelButton.setText(level_button_text + " (WIN) ");
-            } else {
-                levelButton.setText(level_button_text);
-            }
+//            if (victoryType.equals("PERFECT")) {
+//                levelButton.setText(level_button_text + " (PERFECT) ");
+//            } else if (victoryType.equals("WIN")) {
+//                levelButton.setText(level_button_text + " (WIN) ");
+//            } else {
+//                levelButton.setText(level_button_text);
+//            }
+//
+//            levelButton.setTextColor(ContextCompat.getColor(this, android.R.color.holo_orange_light));
+//            levelButton.setTypeface(null, Typeface.BOLD);
 
-            levelButton.setTextColor(ContextCompat.getColor(this, android.R.color.holo_orange_light));
-            levelButton.setTypeface(null, Typeface.BOLD);
+            //levelButton.setBackgroundResource(R.drawable.gradient_background);
+            //String uri = "drawable/lvl_3_3_0";
 
-            levelButton.setBackgroundResource(R.drawable.gradient_background);
+//            android:gravity="center_horizontal|top"
+//            android:layout_height="150dp"
+//            android:layout_width="150dp"
+//            android:layout_centerInParent="true"
+//            app:cb_color="@android:color/holo_orange_light"
+//            app:cb_pressedRingWidth="16dp"
+//            android:src="@drawable/dim_4_4"
+//            android:layout_below="@+id/buttonSelect3x3"
+//            android:layout_centerHorizontal="true"
+//            android:layout_marginTop="35dp"
+
+            String uri = getLevelDrawableResource(level_count);
+            int path = getResources().getIdentifier(uri, null, getPackageName());
+            levelButton.setBackgroundResource(path);
 
             level_count += 1;
 
@@ -141,6 +160,11 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
             tableRowBoard.addView(levelButton);
         }
 
+    }
+
+    public String getLevelDrawableResource(int current_level) {
+        String levelDrawableResource = "lvl_" + String.valueOf(NUM_ROWS) + "_" + String.valueOf(NUM_COLS) + "_" + String.valueOf(current_level);
+        return "drawable/" + levelDrawableResource;
     }
 
     @Override

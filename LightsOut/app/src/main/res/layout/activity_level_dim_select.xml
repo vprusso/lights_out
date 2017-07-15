@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/gradient_background"
     android:orientation="horizontal"
@@ -36,61 +37,57 @@
                 android:textSize="36sp"
                 android:textStyle="bold" />
 
-            <Button
+            <at.markushi.ui.CircleButton
                 android:id="@+id/buttonSelect3x3"
-                android:textColor="@android:color/holo_orange_light"
-                android:background="@drawable/gradient_background"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:gravity="center_horizontal|top"
+                android:layout_height="150dp"
+                android:layout_width="150dp"
+                android:layout_centerInParent="true"
+                app:cb_color="@android:color/holo_orange_light"
+                app:cb_pressedRingWidth="16dp"
+                android:src="@drawable/dim_3_3"
                 android:layout_below="@+id/textViewLevelDimensionSelect"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="35dp"
-                android:text="@string/select_3x3"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
+                android:layout_marginTop="35dp" />
 
-            <Button
+            <at.markushi.ui.CircleButton
                 android:id="@+id/buttonSelect4x4"
-                android:textColor="@android:color/holo_orange_light"
-                android:background="@drawable/gradient_background"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:gravity="center_horizontal|top"
+                android:layout_height="150dp"
+                android:layout_width="150dp"
+                android:layout_centerInParent="true"
+                app:cb_color="@android:color/holo_orange_light"
+                app:cb_pressedRingWidth="16dp"
+                android:src="@drawable/dim_4_4"
                 android:layout_below="@+id/buttonSelect3x3"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="35dp"
-                android:text="@string/select_4x4"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
+                android:layout_marginTop="35dp" />
 
-            <Button
+            <at.markushi.ui.CircleButton
                 android:id="@+id/buttonSelect5x5"
-                android:textColor="@android:color/holo_orange_light"
-                android:background="@drawable/gradient_background"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:gravity="center_horizontal|top"
+                android:layout_height="150dp"
+                android:layout_width="150dp"
+                android:layout_centerInParent="true"
+                app:cb_color="@android:color/holo_orange_light"
+                app:cb_pressedRingWidth="16dp"
+                android:src="@drawable/dim_5_5"
                 android:layout_below="@+id/buttonSelect4x4"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="35dp"
-                android:text="@string/select_5x5"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
+                android:layout_marginTop="35dp" />
 
-            <Button
+            <at.markushi.ui.CircleButton
                 android:id="@+id/buttonSelect6x6"
-                android:textColor="@android:color/holo_orange_light"
-                android:background="@drawable/gradient_background"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:gravity="center_horizontal|top"
+                android:layout_height="150dp"
+                android:layout_width="150dp"
+                android:layout_centerInParent="true"
+                app:cb_color="@android:color/holo_orange_light"
+                app:cb_pressedRingWidth="16dp"
+                android:src="@drawable/dim_6_6"
                 android:layout_below="@+id/buttonSelect5x5"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="35dp"
-                android:text="@string/select_6x6"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
+                android:layout_marginTop="35dp" />
 
         </RelativeLayout>
     </ScrollView>

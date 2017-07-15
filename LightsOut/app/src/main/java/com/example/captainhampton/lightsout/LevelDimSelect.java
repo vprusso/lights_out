@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import at.markushi.ui.CircleButton;
+
 
 public class LevelDimSelect extends AppCompatActivity implements View.OnClickListener {
 
-    Button buttonSelect3x3, buttonSelect4x4, buttonSelect5x5, buttonSelect6x6;
+    CircleButton buttonSelect3x3, buttonSelect4x4, buttonSelect5x5, buttonSelect6x6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,16 +23,16 @@ public class LevelDimSelect extends AppCompatActivity implements View.OnClickLis
     }
 
     private void setupVariables() {
-        buttonSelect3x3 = (Button)findViewById(R.id.buttonSelect3x3);
+        buttonSelect3x3 = (CircleButton)findViewById(R.id.buttonSelect3x3);
         buttonSelect3x3.setOnClickListener(this);
 
-        buttonSelect4x4 = (Button)findViewById(R.id.buttonSelect4x4);
+        buttonSelect4x4 = (CircleButton)findViewById(R.id.buttonSelect4x4);
         buttonSelect4x4.setOnClickListener(this);
 
-        buttonSelect5x5 = (Button)findViewById(R.id.buttonSelect5x5);
+        buttonSelect5x5 = (CircleButton)findViewById(R.id.buttonSelect5x5);
         buttonSelect5x5.setOnClickListener(this);
 
-        buttonSelect6x6 = (Button)findViewById(R.id.buttonSelect6x6);
+        buttonSelect6x6 = (CircleButton)findViewById(R.id.buttonSelect6x6);
         buttonSelect6x6.setOnClickListener(this);
     }
 
