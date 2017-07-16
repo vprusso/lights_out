@@ -20,14 +20,11 @@ public class AboutActivity extends AppCompatActivity {
         TextView textViewAboutWebsite = (TextView) findViewById(R.id.textViewAboutWebsite);
 
 
-        textViewAboutIntro.setText("Hey! Thanks for downloading my app.");
+        textViewAboutIntro.setText(getResources().getString(R.string.about_intro));
 
-        textViewAboutParagraph.setText("I'm just one guy who does this " +
-                "for kicks on the weekends, and it's been a really fun project to work on! " +
-                "Feel free to reach out to me at the link below, and thanks again for " +
-                "downloading!");
+        textViewAboutParagraph.setText(getResources().getString(R.string.about_paragraph));
 
-        textViewAboutWebsite.setText("http://vprusso.github.io/");
+        textViewAboutWebsite.setText(getResources().getString(R.string.my_website));
     }
 
     public void displayBannerAd() {

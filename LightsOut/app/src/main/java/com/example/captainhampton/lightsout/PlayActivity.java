@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 
@@ -163,59 +165,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         return minimumMoves;
     }
 
-    private void displayVictoryDialogBox() {
-        alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-
-        Random rand = new Random();
-        int victoryIcon, randomMessageInteger = rand.nextInt(3) + 1;
-        String victoryTitle, randomMessage, victoryType;
-
-        if (randomMessageInteger == 1) {
-            randomMessage = "Onto the next level?";
-        } else if (randomMessageInteger == 2) {
-            randomMessage = "Thirsty for more?";
-        } else if (randomMessageInteger == 3) {
-            randomMessage = "Onward to glory?";
-        } else {
-            randomMessage = "";
-        }
-
-        String victoryMessage = "You just beat level " + NUM_LEVEL + " from the " +
-                NUM_ROWS + "x" + NUM_COLS + " set of levels. \n\n" + randomMessage;
-
-        if (num_moves == min_num_moves) {
-            victoryTitle = "Perfect!";
-            victoryType = "PERFECT";
-            victoryIcon = android.R.drawable.btn_star;
-            // Make sure that you can't just beat the same level over and over to boost hints.
-            if (utils.getLevelSharedPreferences(sharedLevelPrefs).equals("WIN") || utils.getLevelSharedPreferences(sharedLevelPrefs).equals("LOSE")) {
-                num_hints = utils.incrementHintSharedPreferences(Constants.PERFECT_HINT_INCREMENT);
-                num_solutions = utils.incrementSolutionSharedPreferences(Constants.PERFECT_SOLUTION_INCREMENT);
-            }
-        } else {
-            victoryTitle = "Great job!";
-            victoryType = "WIN";
-            victoryIcon = android.R.drawable.btn_star;
-        }
-
-        alertDialogBuilder.setTitle(victoryTitle)
-                .setMessage(victoryMessage)
-                .setPositiveButton("Level Select", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setNegativeButton("Play Again", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        setLevel(NUM_LEVEL);
-                        setupBoard();
-                    }
-                })
-                .setIcon(victoryIcon)
-                .show();
-        utils.saveUserLevelPreferences(victoryType, sharedLevelPrefs);
-    }
-
     private void setLevel(int lvl) {
         NUM_LEVEL = lvl;
     }
@@ -226,13 +175,17 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void activateButton(int x, int y) {
-        light_states[x][y] = Boolean.TRUE;
-        lights[x][y].setBackgroundResource(R.drawable.light_on);
+        //if (light_hints[x][y] != Boolean.TRUE) {
+            light_states[x][y] = Boolean.TRUE;
+            lights[x][y].setBackgroundResource(R.drawable.light_on);
+        //}
     }
 
     private void deactivateButton(int x, int y) {
-        light_states[x][y] = Boolean.FALSE;
-        lights[x][y].setBackgroundResource(R.drawable.light_off);
+        //if (light_hints[x][y] != Boolean.TRUE) {
+            light_states[x][y] = Boolean.FALSE;
+            lights[x][y].setBackgroundResource(R.drawable.light_off);
+        //}
     }
 
     private void flipLight(int x, int y) {
@@ -295,6 +248,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
                 lights[i][j].setTextColor(Color.BLACK);
+                light_hints[i][j] = Boolean.FALSE;
             }
         }
     }
@@ -304,11 +258,13 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
-                if (solution[i][j] == Boolean.TRUE)
+                if (solution[i][j] == Boolean.TRUE) {
                     lights[i][j].setBackgroundResource(R.drawable.light_hint);
-                    //lights[i][j].setTextColor(Color.YELLOW);
+                    light_hints[i][j] = Boolean.TRUE;
+                }
             }
         }
+        Log.d("TAG", Arrays.toString(light_hints[1]));
     }
 
     private void showHint() {
@@ -318,12 +274,65 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             for (int i = 0; i < NUM_ROWS; i++) {
                 for (int j = 0; j < NUM_COLS; j++) {
                     if (solution[i][j] == Boolean.TRUE) {
-                        //lights[i][j].setTextColor(Color.YELLOW);
                         lights[i][j].setBackgroundResource(R.drawable.light_hint);
+                        light_hints[i][j] = Boolean.TRUE;
                         break overLoop;
                     }
                 }
             }
+    }
+
+    private void displayVictoryDialogBox() {
+        alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+
+        Random rand = new Random();
+        int victoryIcon, randomMessageInteger = rand.nextInt(3) + 1;
+        String victoryTitle, randomMessage, victoryType;
+
+        if (randomMessageInteger == 1) {
+            randomMessage = "Onto the next level?";
+        } else if (randomMessageInteger == 2) {
+            randomMessage = "Thirsty for more?";
+        } else if (randomMessageInteger == 3) {
+            randomMessage = "Onward to glory?";
+        } else {
+            randomMessage = "";
+        }
+
+        String victoryMessage = "You just beat level " + NUM_LEVEL + " from the " +
+                NUM_ROWS + "x" + NUM_COLS + " set of levels. \n\n" + randomMessage;
+
+        if (num_moves == min_num_moves) {
+            victoryTitle = "Perfect!";
+            victoryType = "PERFECT";
+            victoryIcon = android.R.drawable.btn_star;
+            // Make sure that you can't just beat the same level over and over to boost hints.
+            if (utils.getLevelSharedPreferences(sharedLevelPrefs).equals("WIN") || utils.getLevelSharedPreferences(sharedLevelPrefs).equals("LOSE")) {
+                num_hints = utils.incrementHintSharedPreferences(Constants.PERFECT_HINT_INCREMENT);
+                num_solutions = utils.incrementSolutionSharedPreferences(Constants.PERFECT_SOLUTION_INCREMENT);
+            }
+        } else {
+            victoryTitle = "Great job!";
+            victoryType = "WIN";
+            victoryIcon = android.R.drawable.btn_star;
+        }
+
+        alertDialogBuilder.setTitle(victoryTitle)
+                .setMessage(victoryMessage)
+                .setPositiveButton("Level Select", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("Play Again", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        setLevel(NUM_LEVEL);
+                        setupBoard();
+                    }
+                })
+                .setIcon(victoryIcon)
+                .show();
+        utils.saveUserLevelPreferences(victoryType, sharedLevelPrefs);
     }
 
     @Override
@@ -344,7 +353,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         }
 
         if (buttonSolve.isPressed()) {
-            if (num_solutions >0) {
+            if (num_solutions > 0) {
                 showSolution();
                 num_solutions = utils.decrementSolutionSharedPreferences(1);
                 buttonSolve.setText("Solve(" + String.valueOf(num_solutions) + ")");
@@ -352,7 +361,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                 Toast.makeText(getApplicationContext(), "No more solutions!", Toast.LENGTH_SHORT).show();
 
             }
-            showSolution();
         }
 
     }
