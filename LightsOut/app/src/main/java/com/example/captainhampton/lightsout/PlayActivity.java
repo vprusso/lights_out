@@ -118,8 +118,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                         TableRow.LayoutParams.MATCH_PARENT,
                         1.0f
                 ));
-
-                //boardButton.setText("" + x + "," + y);
                 boardButton.setBackgroundResource(R.drawable.gradient_background);
                 // make text not clip on small buttons
                 boardButton.setPadding(0, 0, 0, 0);
@@ -230,6 +228,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             }
         }
         resetNumMoves();
+        showSolutionFlag = false;
     }
 
     private boolean checkVictory() {
@@ -244,6 +243,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void clearSolution() {
+        //showSolutionFlag = false;
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
                 lights[i][j].setTextColor(Color.BLACK);
@@ -253,7 +253,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     private void showSolution() {
         boolean[][] solution = solver.calculateWinningConfig(lightStates);
-        showSolutionFlag = true;
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
                 if (solution[i][j] == Boolean.TRUE) {
@@ -349,6 +348,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         if (buttonSolve.isPressed()) {
             if (numSolutions > 0) {
+                showSolutionFlag = true;
                 showSolution();
                 numSolutions = utils.decrementSolutionSharedPreferences(1);
                 buttonSolve.setText("Solve(" + String.valueOf(numSolutions) + ")");
