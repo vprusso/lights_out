@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,7 +13,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 
@@ -28,8 +26,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     TableLayout tableLayoutBoard;
     AlertDialog.Builder alertDialogBuilder;
 
-    boolean[][] light_states, light_hints;
-    int num_moves, min_num_moves, total_levels, num_hints, num_solutions;
+    boolean[][] lightStates;
+    boolean showSolutionFlag;
+    int numMoves, minNumMoves, totalLevels, numHints, numSolutions;
     private Solver solver;
 
     String sharedLevelPrefs;
@@ -46,9 +45,10 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         NUM_LEVEL = getIntent().getIntExtra("NUM_LEVEL", 0);
 
         lights = new Button[NUM_ROWS][NUM_COLS];
-        light_states = new boolean[NUM_ROWS][NUM_COLS];
-        light_hints = new boolean[NUM_ROWS][NUM_COLS];
-        total_levels = Levels.getLevels(NUM_ROWS, NUM_COLS).length;
+        lightStates = new boolean[NUM_ROWS][NUM_COLS];
+        totalLevels = Levels.getLevels(NUM_ROWS, NUM_COLS).length;
+
+        showSolutionFlag = false;
 
         sharedLevelPrefs = String.valueOf(NUM_ROWS) + "-" + String.valueOf(NUM_COLS) + "-" + String.valueOf(NUM_LEVEL);
 
@@ -58,14 +58,14 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         initBoard();
         setupBoard();
 
-        min_num_moves = findMinimumNumberOfMoves();
+        minNumMoves = findMinimumNumberOfMoves();
 
     }
 
     private void setupVariables() {
 
-        num_hints = utils.getHintSharedPreferences();
-        num_solutions = utils.getSolutionSharedPreferences();
+        numHints = utils.getHintSharedPreferences();
+        numSolutions = utils.getSolutionSharedPreferences();
 
         tableLayoutBoard = (TableLayout)findViewById(R.id.tableLayoutBoard);
 
@@ -74,11 +74,11 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         buttonHint = (Button)findViewById(R.id.buttonHint);
         buttonHint.setOnClickListener(this);
-        buttonHint.setText("Hints(" + String.valueOf(num_hints) + ")");
+        buttonHint.setText("Hints(" + String.valueOf(numHints) + ")");
 
         buttonSolve = (Button)findViewById(R.id.buttonSolve);
         buttonSolve.setOnClickListener(this);
-        buttonSolve.setText("Solve(" + String.valueOf(num_solutions) + ")");
+        buttonSolve.setText("Solve(" + String.valueOf(numSolutions) + ")");
 
         textViewNumMoves = (TextView)findViewById(R.id.textViewNumMoves);
         textViewLevelTitle = (TextView)findViewById(R.id.textViewLevelTitle);
@@ -132,8 +132,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
                         if (button.isPressed()) {
                             pressedLights(x, y);
                             clearSolution();
-                            num_moves++;
-                            textViewNumMoves.setText(String.format(Locale.US, "%d", num_moves));
+                            numMoves++;
+                            textViewNumMoves.setText(String.format(Locale.US, "%d", numMoves));
                         }
 
                         if (checkVictory()) {
@@ -152,7 +152,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private int findMinimumNumberOfMoves() {
-        boolean[][] solution = solver.calculateWinningConfig(light_states);
+        boolean[][] solution = solver.calculateWinningConfig(lightStates);
 
         int minimumMoves = 0;
         for (int i = 0; i < NUM_ROWS; i++) {
@@ -170,22 +170,18 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void resetNumMoves() {
-        num_moves = 0;
-        textViewNumMoves.setText(String.format(Locale.US, "%d", num_moves));
+        numMoves = 0;
+        textViewNumMoves.setText(String.format(Locale.US, "%d", numMoves));
     }
 
     private void activateButton(int x, int y) {
-        //if (light_hints[x][y] != Boolean.TRUE) {
-            light_states[x][y] = Boolean.TRUE;
-            lights[x][y].setBackgroundResource(R.drawable.light_on);
-        //}
+        lightStates[x][y] = Boolean.TRUE;
+        lights[x][y].setBackgroundResource(R.drawable.light_on);
     }
 
     private void deactivateButton(int x, int y) {
-        //if (light_hints[x][y] != Boolean.TRUE) {
-            light_states[x][y] = Boolean.FALSE;
-            lights[x][y].setBackgroundResource(R.drawable.light_off);
-        //}
+        lightStates[x][y] = Boolean.FALSE;
+        lights[x][y].setBackgroundResource(R.drawable.light_off);
     }
 
     private void flipLight(int x, int y) {
@@ -200,7 +196,7 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private boolean isLightActive(int x, int y) {
-        return ( light_states[x][y] == Boolean.TRUE );
+        return ( lightStates[x][y] == Boolean.TRUE );
     }
 
     private void pressedLights(int x, int y) {
@@ -222,6 +218,9 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
         if (!isLightOutOfBounds(x, right))
             flipLight(x, right);
+
+        if (showSolutionFlag)
+            showSolution();
     }
 
     private void clearBoard() {
@@ -248,34 +247,30 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
                 lights[i][j].setTextColor(Color.BLACK);
-                light_hints[i][j] = Boolean.FALSE;
             }
         }
     }
 
     private void showSolution() {
-        boolean[][] solution = solver.calculateWinningConfig(light_states);
-
+        boolean[][] solution = solver.calculateWinningConfig(lightStates);
+        showSolutionFlag = true;
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
                 if (solution[i][j] == Boolean.TRUE) {
                     lights[i][j].setBackgroundResource(R.drawable.light_hint);
-                    light_hints[i][j] = Boolean.TRUE;
                 }
             }
         }
-        Log.d("TAG", Arrays.toString(light_hints[1]));
     }
 
     private void showHint() {
-        boolean[][] solution = solver.calculateWinningConfig(light_states);
+        boolean[][] solution = solver.calculateWinningConfig(lightStates);
 
         overLoop:
             for (int i = 0; i < NUM_ROWS; i++) {
                 for (int j = 0; j < NUM_COLS; j++) {
                     if (solution[i][j] == Boolean.TRUE) {
                         lights[i][j].setBackgroundResource(R.drawable.light_hint);
-                        light_hints[i][j] = Boolean.TRUE;
                         break overLoop;
                     }
                 }
@@ -302,14 +297,14 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         String victoryMessage = "You just beat level " + NUM_LEVEL + " from the " +
                 NUM_ROWS + "x" + NUM_COLS + " set of levels. \n\n" + randomMessage;
 
-        if (num_moves == min_num_moves) {
+        if (numMoves == minNumMoves) {
             victoryTitle = "Perfect!";
             victoryType = "PERFECT";
             victoryIcon = android.R.drawable.btn_star;
             // Make sure that you can't just beat the same level over and over to boost hints.
             if (utils.getLevelSharedPreferences(sharedLevelPrefs).equals("WIN") || utils.getLevelSharedPreferences(sharedLevelPrefs).equals("LOSE")) {
-                num_hints = utils.incrementHintSharedPreferences(Constants.PERFECT_HINT_INCREMENT);
-                num_solutions = utils.incrementSolutionSharedPreferences(Constants.PERFECT_SOLUTION_INCREMENT);
+                numHints = utils.incrementHintSharedPreferences(Constants.PERFECT_HINT_INCREMENT);
+                numSolutions = utils.incrementSolutionSharedPreferences(Constants.PERFECT_SOLUTION_INCREMENT);
             }
         } else {
             victoryTitle = "Great job!";
@@ -343,20 +338,20 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         }
 
         if (buttonHint.isPressed()) {
-            if (num_hints > 0) {
+            if (numHints > 0) {
                 showHint();
-                num_hints = utils.decrementHintSharedPreferences(1);
-                buttonHint.setText("Hints(" + String.valueOf(num_hints) + ")");
+                numHints = utils.decrementHintSharedPreferences(1);
+                buttonHint.setText("Hints(" + String.valueOf(numHints) + ")");
             } else {
                 Toast.makeText(getApplicationContext(), "No more hints!", Toast.LENGTH_SHORT).show();
             }
         }
 
         if (buttonSolve.isPressed()) {
-            if (num_solutions > 0) {
+            if (numSolutions > 0) {
                 showSolution();
-                num_solutions = utils.decrementSolutionSharedPreferences(1);
-                buttonSolve.setText("Solve(" + String.valueOf(num_solutions) + ")");
+                numSolutions = utils.decrementSolutionSharedPreferences(1);
+                buttonSolve.setText("Solve(" + String.valueOf(numSolutions) + ")");
             } else {
                 Toast.makeText(getApplicationContext(), "No more solutions!", Toast.LENGTH_SHORT).show();
 
