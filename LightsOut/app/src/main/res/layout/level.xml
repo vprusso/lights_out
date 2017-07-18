@@ -87,6 +87,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/holo_orange_light"
+                android:textStyle="bold"
                 android:text="@string/level_name"
                 android:layout_column="1"/>
 
@@ -95,6 +97,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/holo_orange_light"
+                android:textStyle="bold"
                 android:layout_column="2"/>
 
         </TableRow>
@@ -108,6 +112,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/holo_orange_light"
+                android:textStyle="bold"
                 android:text="@string/moves"
                 android:layout_column="1"/>
 
@@ -116,6 +122,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/holo_orange_light"
+                android:textStyle="bold"
                 android:layout_column="2"/>
 
         </TableRow>
@@ -128,21 +136,30 @@
                 android:id="@+id/buttonReset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:backgroundTint="@color/common_google_signin_btn_text_dark_focused"
+                android:elevation="5dp"
                 android:text="@string/reset"
-                android:layout_column="1"/>
+                android:textColor="@android:color/holo_orange_light"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/buttonHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"/>
+                android:layout_column="1"
+                android:backgroundTint="@color/common_google_signin_btn_text_dark_focused"
+                android:textColor="@android:color/holo_orange_light"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/buttonSolve"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/solve"
-                android:layout_column="1"/>
+                android:layout_column="1"
+                android:backgroundTint="@color/common_google_signin_btn_text_dark_focused"
+                android:textColor="@android:color/holo_orange_light"
+                android:textStyle="bold" />
 
         </TableRow>
 

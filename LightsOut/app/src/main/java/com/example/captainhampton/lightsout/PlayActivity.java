@@ -243,7 +243,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     }
 
     private void clearSolution() {
-        //showSolutionFlag = false;
         for (int i = 0; i < NUM_ROWS; i++) {
             for (int j = 0; j < NUM_COLS; j++) {
                 lights[i][j].setTextColor(Color.BLACK);
