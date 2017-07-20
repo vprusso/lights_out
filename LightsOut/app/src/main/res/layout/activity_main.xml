@@ -7,6 +7,10 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="0dp"
+    android:paddingBottom="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
     tools:context="com.example.captainhampton.lightsout.MainActivity">
 
     <!--<ScrollView-->
@@ -18,8 +22,13 @@
         <!--android:fillViewport="true">-->
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="bottom"
+        android:paddingLeft="0dp"
+        android:paddingBottom="0dp"
+        android:paddingRight="0dp"
+        android:paddingTop="0dp"
         android:background="@drawable/gradient_background">
 
         <TextView
@@ -75,6 +84,7 @@
             ads:adSize="BANNER"
             ads:adUnitId="@string/banner_ad_unit_id">
         </com.google.android.gms.ads.AdView>
+
 
     </RelativeLayout>
 <!--</ScrollView>-->

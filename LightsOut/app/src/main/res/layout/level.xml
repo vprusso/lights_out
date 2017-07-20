@@ -136,7 +136,7 @@
                 android:id="@+id/buttonReset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
+                android:layout_column="0"
                 android:backgroundTint="@color/common_google_signin_btn_text_dark_focused"
                 android:elevation="5dp"
                 android:text="@string/reset"
@@ -147,7 +147,7 @@
                 android:id="@+id/buttonHint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
+                android:layout_column="0"
                 android:backgroundTint="@color/common_google_signin_btn_text_dark_focused"
                 android:textColor="@android:color/holo_orange_light"
                 android:textStyle="bold" />
@@ -156,7 +156,7 @@
                 android:id="@+id/buttonSolve"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
+                android:layout_column="0"
                 android:backgroundTint="@color/common_google_signin_btn_text_dark_focused"
                 android:textColor="@android:color/holo_orange_light"
                 android:textStyle="bold" />

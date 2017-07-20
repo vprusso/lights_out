@@ -36,6 +36,14 @@ public class LevelDimSelect extends AppCompatActivity implements View.OnClickLis
         buttonSelect6x6.setOnClickListener(this);
     }
 
+    @Override
+    public void onBackPressed() {
+        // super.onBackPressed();
+        Intent intentMainActivity = new Intent(LevelDimSelect.this, MainActivity.class);
+        startActivity(intentMainActivity);
+        finish();
+    }
+
 
     @Override
     public void onClick(View v) {

@@ -1,6 +1,7 @@
 package com.example.captainhampton.lightsout;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import java.util.Locale;
 import java.util.Random;
@@ -29,11 +34,13 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     boolean[][] lightStates;
     boolean showSolutionFlag;
     int numMoves, minNumMoves, totalLevels, numHints, numSolutions;
-    private Solver solver;
-
     String sharedLevelPrefs;
 
-    Utils utils = new Utils(this);
+    private Solver solver;
+    private Utils utils;
+
+    private InterstitialAd mInterstitial;
+    private AdRequest request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +60,25 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         sharedLevelPrefs = String.valueOf(NUM_ROWS) + "-" + String.valueOf(NUM_COLS) + "-" + String.valueOf(NUM_LEVEL);
 
         solver = new Solver(NUM_ROWS, NUM_COLS, NUM_LEVEL);
+        utils = new Utils(this);
+
+        mInterstitial = new InterstitialAd(this);
+        mInterstitial.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+        // Set an AdListener.
+        mInterstitial.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Proceed to the next level.
+                goToNextLevel();
+            }
+        });
+
+        request = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        mInterstitial.loadAd(request);
 
         setupVariables();
         initBoard();
@@ -163,10 +189,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         return minimumMoves;
     }
 
-    private void setLevel(int lvl) {
-        NUM_LEVEL = lvl;
-    }
-
     private void resetNumMoves() {
         numMoves = 0;
         textViewNumMoves.setText(String.format(Locale.US, "%d", numMoves));
@@ -275,6 +297,29 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             }
     }
 
+    @Override
+    public void onBackPressed() {
+        // super.onBackPressed();
+        Intent levelDimSelectIntent = new Intent(PlayActivity.this, LevelDimSelect.class);
+        startActivity(levelDimSelectIntent);
+        finish();
+    }
+
+    public void goToNextLevel() {
+        if (NUM_LEVEL < totalLevels - 1) {
+            Intent playLevelIntent = new Intent(PlayActivity.this, PlayActivity.class);
+            playLevelIntent.putExtra("NUM_ROWS", NUM_ROWS);
+            playLevelIntent.putExtra("NUM_COLS", NUM_COLS);
+            playLevelIntent.putExtra("NUM_LEVEL", NUM_LEVEL + 1);
+            startActivity(playLevelIntent);
+        } else {
+            Intent levelDimSelectIntent = new Intent(PlayActivity.this, LevelDimSelect.class);
+            startActivity(levelDimSelectIntent);
+            finish();
+        }
+    }
+
+
     private void displayVictoryDialogBox() {
         alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this, android.R.style.Theme_Material_Dialog_Alert);
 
@@ -309,23 +354,28 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             victoryType = "WIN";
             victoryIcon = android.R.drawable.btn_star;
         }
+        utils.saveUserLevelPreferences(victoryType, sharedLevelPrefs);
 
         alertDialogBuilder.setTitle(victoryTitle)
                 .setMessage(victoryMessage)
-                .setPositiveButton("Level Select", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Menu", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        Intent levelDimSelectIntent = new Intent(PlayActivity.this, LevelDimSelect.class);
+                        startActivity(levelDimSelectIntent);
                         finish();
+
                     }
                 })
-                .setNegativeButton("Play Again", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        setLevel(NUM_LEVEL);
-                        setupBoard();
+                .setNegativeButton("Next Level", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int which) {
+                       if (mInterstitial.isLoaded()) {
+                           mInterstitial.show();
+                           // Once ad closes, it proceeds to next level.
+                       }
                     }
                 })
                 .setIcon(victoryIcon)
                 .show();
-        utils.saveUserLevelPreferences(victoryType, sharedLevelPrefs);
     }
 
     @Override

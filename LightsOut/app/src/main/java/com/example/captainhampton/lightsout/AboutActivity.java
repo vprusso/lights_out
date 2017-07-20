@@ -29,8 +29,8 @@ public class AboutActivity extends AppCompatActivity {
 
     public void displayBannerAd() {
         AdView adView = (AdView)findViewById(R.id.aboutAdView);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        //AdRequest adRequest = new AdRequest.Builder().build();
+        //AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        AdRequest adRequest = new AdRequest.Builder().build();
 
         adView.loadAd(adRequest);
     }
