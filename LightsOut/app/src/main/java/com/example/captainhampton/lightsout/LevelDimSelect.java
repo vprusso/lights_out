@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 
 import at.markushi.ui.CircleButton;
 
@@ -38,7 +37,6 @@ public class LevelDimSelect extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onBackPressed() {
-        // super.onBackPressed();
         Intent intentMainActivity = new Intent(LevelDimSelect.this, MainActivity.class);
         startActivity(intentMainActivity);
         finish();

@@ -7,10 +7,10 @@ public class Solver {
     int NUM_ROWS, NUM_COLS, NUM_LEVEL;
     PlayActivity playActivity = new PlayActivity();
 
-    public Solver(int num_rows, int num_cols, int num_level){
-        NUM_COLS = num_cols;
-        NUM_ROWS = num_rows;
-        NUM_LEVEL = num_level;
+    public Solver(int numRows, int numCols, int numLevel){
+        NUM_COLS = numCols;
+        NUM_ROWS = numRows;
+        NUM_LEVEL = numLevel;
     }
 
     public static int findFirstIdx(SimpleMatrix C) {
@@ -26,22 +26,22 @@ public class Solver {
         return idx;
     }
 
-    public static SimpleMatrix getRow(SimpleMatrix M, int row_num, int col_offset) {
-        SimpleMatrix row = M.extractMatrix(row_num,row_num+1,col_offset,M.numCols());
+    public static SimpleMatrix getRow(SimpleMatrix M, int rowNum, int colOffset) {
+        SimpleMatrix row = M.extractMatrix(rowNum,rowNum+1,colOffset,M.numCols());
         return row;
     }
 
-    public static SimpleMatrix getCol(SimpleMatrix M, int col_num, int row_offset) {
-        SimpleMatrix col = M.extractMatrix(row_offset,M.numRows(),col_num,col_num+1);
+    public static SimpleMatrix getCol(SimpleMatrix M, int colNum, int rowOffset) {
+        SimpleMatrix col = M.extractMatrix(rowOffset,M.numRows(),colNum,colNum+1);
         return col;
     }
 
-    public static SimpleMatrix setRow(SimpleMatrix M, SimpleMatrix row, int row_num, int from, int to) {
+    public static SimpleMatrix setRow(SimpleMatrix M, SimpleMatrix row, int rowNum, int from, int to) {
 
         double val;
         for (int j = from; j < to; j++ ) {
             val = row.get(0,j);
-            M.set(row_num,j,val);
+            M.set(rowNum,j,val);
         }
 
         return M;

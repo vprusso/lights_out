@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
 import at.markushi.ui.CircleButton;
@@ -65,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         //AdView adView = new AdView(this);
         //adView.setAdSize(AdSize.BANNER);
         //adView.setAdUnitId(getString(R.string.banner_ad_unit_id));
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        //AdRequest adRequest = new AdRequest.Builder().build();
+        //AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        AdRequest adRequest = new AdRequest.Builder().build();
 
         adView.loadAd(adRequest);
     }

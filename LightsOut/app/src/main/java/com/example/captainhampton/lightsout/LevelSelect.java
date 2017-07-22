@@ -3,19 +3,16 @@ package com.example.captainhampton.lightsout;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import at.markushi.ui.CircleButton;
 
 public class LevelSelect extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,7 +21,6 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
     Button levelButton;
     TextView textViewLevelSelect;
     String sharedLevelPrefs;
-
 
     SharedPreferences sharedPreferences;
 
@@ -42,7 +38,7 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
         super.onResume();
         initLevelSelectScreen();
         initLevelSelect();
-        Log.d("TAG", "ONCREATE_LEVELSELECT");
+        //Log.d("TAG", "ONCREATE_LEVELSELECT");
     }
 
     @Override
@@ -66,7 +62,6 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
         textViewLevelSelect = (TextView)findViewById(R.id.textViewLevelSelect);
         sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         sharedLevelPrefs =  String.valueOf(NUM_ROWS) + "-" + String.valueOf(NUM_COLS) + "-" + String.valueOf(NUM_LEVEL);
-
     }
 
     private void initLevelSelectScreen() {
@@ -110,7 +105,7 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
             String level_button_text = level_count + " : " + NUM_ROWS + "x" + NUM_COLS;
 
             String victoryType = sharedPreferences.getString(String.valueOf(NUM_ROWS) + "-" + String.valueOf(NUM_COLS) + "-" + String.valueOf(level_count), "");
-            Log.d(String.valueOf(level_count), victoryType);
+            //Log.d(String.valueOf(level_count), victoryType);
 
             levelButton.setTag(Integer.toString(level_count));
 
@@ -150,11 +145,13 @@ public class LevelSelect extends AppCompatActivity implements View.OnClickListen
 
             tableRowBoard.addView(levelButton);
         }
-
     }
 
     public String getLevelDrawableResource(int current_level) {
-        String levelDrawableResource = "lvl_" + String.valueOf(NUM_ROWS) + "_" + String.valueOf(NUM_COLS) + "_" + String.valueOf(current_level);
+        String levelDrawableResource = "lvl_" +
+                String.valueOf(NUM_ROWS) + "_" +
+                String.valueOf(NUM_COLS) + "_" +
+                String.valueOf(current_level);
         return "drawable/" + levelDrawableResource;
     }
 

@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 public class HowToPlayActivity extends AppCompatActivity {
     @Override
@@ -23,7 +21,6 @@ public class HowToPlayActivity extends AppCompatActivity {
         textViewHowToPlayParagraph.setText(getResources().getString(R.string.how_to_play_paragraph));
 
         textViewHowToPlayEnding.setText(getResources().getString(R.string.how_to_play_ending));
-
     }
 
 }

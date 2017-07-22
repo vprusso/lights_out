@@ -2,7 +2,6 @@ package com.example.captainhampton.lightsout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -77,7 +76,8 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
             }
         });
 
-        request = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        //request = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        request = new AdRequest.Builder().build();
         mInterstitial.loadAd(request);
 
         setupVariables();
@@ -114,7 +114,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
     private void setupBoard() {
 
         clearBoard();
-        clearSolution();
 
         for (int i = 0; i < Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL].length; i++) {
             int x = Levels.getLevels(NUM_ROWS,NUM_COLS)[NUM_LEVEL][i][0];
@@ -155,7 +154,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
                         if (button.isPressed()) {
                             pressedLights(x, y);
-                            clearSolution();
                             numMoves++;
                             textViewNumMoves.setText(String.format(Locale.US, "%d", numMoves));
                         }
@@ -264,14 +262,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
         return true;
     }
 
-    private void clearSolution() {
-        for (int i = 0; i < NUM_ROWS; i++) {
-            for (int j = 0; j < NUM_COLS; j++) {
-                lights[i][j].setTextColor(Color.BLACK);
-            }
-        }
-    }
-
     private void showSolution() {
         boolean[][] solution = solver.calculateWinningConfig(lightStates);
         for (int i = 0; i < NUM_ROWS; i++) {
@@ -299,7 +289,6 @@ public class PlayActivity extends AppCompatActivity implements OnClickListener {
 
     @Override
     public void onBackPressed() {
-        // super.onBackPressed();
         Intent levelDimSelectIntent = new Intent(PlayActivity.this, LevelDimSelect.class);
         startActivity(levelDimSelectIntent);
         finish();
